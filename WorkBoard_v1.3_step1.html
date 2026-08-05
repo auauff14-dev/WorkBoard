@@ -414,7 +414,7 @@ body.dark #hint{
    設定画面
 ========================== */
 
-.modal{
+.settings-modal{
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,.45);
@@ -435,6 +435,30 @@ body.dark #hint{
 body.dark .modal-content{
     background:#2d2d2d;
     color:white;
+}
+
+body.dark .modal {
+    background: #2d2d2d;
+    color: #ffffff;
+    border: 1px solid #4b5563;
+}
+
+body.dark .modal h3 {
+    color: #ffffff;
+}
+
+body.dark .modal input,
+body.dark .modal textarea,
+body.dark .modal select {
+    background:#374151;
+    color:#ffffff;
+    border:1px solid #4b5563;
+}
+
+body.dark .modal button {
+    background: #374151;
+    color: #ffffff;
+    border: 1px solid #4b5563;
 }
 
 .card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.18);transition:.18s;}
@@ -1294,6 +1318,9 @@ function render() {
                     .focus();
 
             };
+
+        groupName.ondblclick =
+            editGroupButton.onclick;
 
 
         /* ==================================================
