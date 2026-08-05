@@ -1,0 +1,2781 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>WorkBoard</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f4f6f8;
+    color: #222;
+    font-family: "Yu Gothic", Meiryo, sans-serif;
+}
+
+header {
+    background: #1E3A5F;
+    color: white;
+    padding: 10px 15px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.toolbar {
+    padding: 8px;
+    background: white;
+    display: flex;
+    gap: 5px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    border-bottom: 1px solid #ddd;
+}
+
+#search {
+    flex: 1;
+    min-width: 100px;
+    padding: 6px 8px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+}
+
+button {
+    font-family: inherit;
+    padding: 5px 8px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #eef5ff;
+}
+
+#list {
+    padding: 7px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.group {
+    margin-bottom: 8px;
+}
+
+.group-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #e9eef5;
+    border: 1px solid #d4dbe5;
+    border-radius: 5px;
+    padding: 5px 7px;
+    min-height: 32px;
+    cursor: grab;
+}
+
+.group-header:active {
+    cursor: grabbing;
+}
+
+.group-toggle {
+    border: none;
+    background: transparent;
+    padding: 1px 3px;
+    font-size: 13px;
+}
+
+.group-toggle:hover {
+    background: transparent;
+}
+
+.group-name {
+    flex: 1;
+    font-weight: bold;
+    cursor: default;
+}
+
+.group-actions {
+    display: flex;
+    gap: 3px;
+}
+
+.group-actions button {
+    padding: 3px 6px;
+    font-size: 11px;
+}
+
+.group-items {
+    padding-left: 12px;
+    padding-top: 3px;
+}
+
+.group-items.collapsed {
+    display: none;
+}
+
+.card {
+    position: relative;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 4px 6px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 34px;
+}
+
+.drag {
+    cursor: grab;
+    color: #888;
+    font-size: 15px;
+    padding: 1px 2px;
+}
+
+.drag:active {
+    cursor: grabbing;
+}
+
+.name-area {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    padding: 3px 2px;
+    cursor: default;
+}
+
+.name {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: calc(100% + 5px);
+    width: 430px;
+    max-width: 60vw;
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #222;
+    color: white;
+    padding: 9px 11px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    z-index: 100;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+    font-size: 13px;
+    font-weight: normal;
+    line-height: 1.5;
+    overscroll-behavior: contain;
+}
+
+.name-area:hover .tooltip {
+    display: block;
+}
+
+.tooltip:hover {
+    display: block;
+}
+
+.actions {
+    display: flex;
+    gap: 3px;
+}
+
+.actions button {
+    padding: 4px 7px;
+    font-size: 12px;
+}
+
+.actions button:first-child {
+    min-width: 80px;
+    padding: 4px 10px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#addBox {
+    display: none;
+    padding: 10px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+#addBox input,
+#addBox textarea,
+#addBox select {
+    width: 100%;
+    margin: 3px 0 7px;
+    padding: 6px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+#addBox textarea {
+    min-height: 70px;
+    resize: vertical;
+}
+
+.form-label {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
+}
+
+#hint {
+    font-size: 11px;
+    color: #666;
+    padding: 5px 9px 1px;
+}
+
+.drag-over {
+    border-top: 3px solid #1f6feb;
+}
+
+#toast {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #222;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 9999;
+}
+
+#toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 500;
+}
+
+.modal {
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+}
+
+.modal h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+    width: 100%;
+    padding: 7px;
+    margin-bottom: 8px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
+.modal textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+body.dark .modal input,
+body.dark .modal textarea,
+body.dark .modal select{
+    background:#374151;
+    color:#ffffff;
+    border:1px solid #4b5563;
+}
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+    color:#cbd5e1;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.confirm-message {
+    white-space: pre-wrap;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+@media (max-width: 650px) {
+
+    .toolbar {
+        flex-wrap: wrap;
+    }
+
+    #search {
+        flex-basis: 100%;
+    }
+
+    .tooltip {
+        position: fixed;
+        left: 5vw;
+        right: 5vw;
+        top: 90px;
+        width: auto;
+        max-width: none;
+        max-height: 60vh;
+    }
+
+}
+/* ==========================
+   ダークモード
+========================== */
+
+body.dark{
+    background:#1e1e1e;
+    color:#f5f5f5;
+}
+
+body.dark header{
+    background:#0f172a;
+}
+
+body.dark .toolbar{
+    background:#2b2b2b;
+}
+body.dark button{
+    background:#374151;
+    color:white;
+    border:1px solid #4b5563;
+}
+
+body.dark button:hover{
+    background:#4b5563;
+}
+body.dark {
+    color: white;
+}
+body.dark .card{
+    background:#2d2d2d;
+    border-color:#444;
+}
+body.dark .group-header{
+    color:#ffffff;
+}
+body.dark .group-header{
+    background:#374151;
+    border-color:#4b5563;
+}
+
+body.dark .group-name{
+    color:#ffffff;
+}
+body.dark .help{
+    color:#cbd5e1;
+}
+body.dark .tips{
+    color:#cbd5e1;
+}
+body.dark #hint{
+    color:#cbd5e1;
+}
+/* ==========================
+   設定画面
+========================== */
+
+.modal{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content{
+    width: 320px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+body.dark .modal-content{
+    background:#2d2d2d;
+    color:white;
+}
+
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.18);transition:.18s;}
+.dragging{opacity:.75;transform:scale(1.02);box-shadow:0 12px 24px rgba(0,0,0,.28)!important;}
+.drop-target{outline:2px solid #3b82f6;outline-offset:2px;}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+WorkBoard<br><span style="font-size:12px;font-weight:400;opacity:.85">One Click Work Tool</span>
+</header>
+
+<div class="toolbar">
+
+<input
+    id="search"
+    placeholder="検索"
+>
+
+<button onclick="toggleAdd()">
+＋追加
+</button>
+
+<button onclick="addGroup()">
+📁グループ
+</button>
+<button onclick="openSettings()"
+title="設定">
+⚙️
+</button>
+
+<input
+    type="file"
+    id="importFile"
+    accept=".json"
+    style="display:none"
+    onchange="importData(event)"
+>
+<button id="themeBtn" title="ダークモード">
+🌙
+</button>
+
+</div>
+
+
+<div id="addBox">
+
+<label class="form-label">
+タイトル
+</label>
+
+<input
+    id="newName"
+    placeholder="表示するタイトル"
+>
+
+<label class="form-label">
+種類
+</label>
+
+<select id="newType">
+
+<option value="text">
+Text
+</option>
+
+<option value="url">
+URL
+</option>
+
+</select>
+
+<label class="form-label">
+内容
+</label>
+
+<textarea
+    id="newText"
+    placeholder="コピーする内容、またはURL"
+></textarea>
+
+<label class="form-label">
+グループ
+</label>
+
+<select id="newGroup">
+</select>
+
+<button onclick="addItem()">
+登録
+</button>
+
+<button onclick="toggleAdd()">
+閉じる
+</button>
+
+</div>
+
+
+<div id="hint">
+↕️ ドラッグで順番変更 ／ グループもドラッグで順番変更 ／ Textはマウスオーバーで内容表示 ／ URLは🔗 Openで開く ／ 📋 Copy・🔗 Open・✏️編集・🗑️削除
+</div>
+
+
+<div id="list"></div>
+
+
+<div id="toast">
+✅ Copied!
+</div>
+
+
+<!-- 編集モーダル -->
+
+<div
+    id="editModalBg"
+    class="modal-bg"
+>
+
+<div class="modal">
+
+<h3>
+項目を編集
+</h3>
+
+<input
+    id="editName"
+    placeholder="タイトル"
+>
+
+<select id="editType">
+
+<option value="text">
+Text
+</option>
+
+<option value="url">
+URL
+</option>
+
+</select>
+
+<textarea
+    id="editText"
+    placeholder="内容"
+></textarea>
+
+<select id="editGroup">
+</select>
+
+<div class="modal-buttons">
+
+<button onclick="closeEdit()">
+キャンセル
+</button>
+
+<button onclick="saveEdit()">
+保存
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- グループ入力モーダル -->
+
+<div
+    id="groupModalBg"
+    class="modal-bg"
+>
+
+<div class="modal">
+
+<h3 id="groupModalTitle">
+新しいグループを作成
+</h3>
+
+<input
+    id="groupNameInput"
+    placeholder="グループ名"
+>
+
+<div class="modal-buttons">
+
+<button onclick="closeGroupModal()">
+キャンセル
+</button>
+
+<button onclick="saveGroupModal()">
+保存
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 確認モーダル -->
+
+<div
+    id="confirmModalBg"
+    class="modal-bg"
+>
+
+<div class="modal">
+
+<h3 id="confirmModalTitle">
+確認
+</h3>
+
+<div
+    id="confirmModalMessage"
+    class="confirm-message"
+></div>
+
+<div class="modal-buttons">
+
+<button onclick="closeConfirmModal()">
+キャンセル
+</button>
+
+<button onclick="executeConfirm()">
+OK
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   初期データ
+================================================== */
+
+const defaultData = {
+
+    groups: [
+
+        {
+            id: "default",
+            name: "未分類",
+            collapsed: false
+        }
+
+    ],
+
+    items: [
+
+        {
+            id: crypto.randomUUID(),
+            groupId: "default",
+            name: "w1kiw1",
+            type: "text",
+            content: "w1kiw1"
+        },
+
+        {
+            id: crypto.randomUUID(),
+            groupId: "default",
+            name: "W1KIWTE",
+            type: "text",
+            content: "W1KIWTE"
+        },
+
+        {
+            id: crypto.randomUUID(),
+            groupId: "default",
+            name: "W1KIWR",
+            type: "text",
+            content: "W1KIWR"
+        }
+
+    ]
+
+};
+
+
+/* ==================================================
+   データ読み込み
+================================================== */
+
+let data = JSON.parse(
+    localStorage.getItem("copyToolData")
+);
+
+
+/* ==================================================
+   旧データからの移行
+================================================== */
+
+if (
+    !data ||
+    !Array.isArray(data.groups) ||
+    !Array.isArray(data.items)
+) {
+
+    const oldData = JSON.parse(
+        localStorage.getItem("copyToolItems")
+    );
+
+    if (Array.isArray(oldData)) {
+
+        data = {
+
+            groups: [
+
+                {
+                    id: "default",
+                    name: "未分類",
+                    collapsed: false
+                }
+
+            ],
+
+            items: oldData
+                .map(item => {
+
+                    if (
+                        Array.isArray(item) &&
+                        item.length >= 3
+                    ) {
+
+                        return {
+
+                            id:
+                                crypto.randomUUID(),
+
+                            groupId:
+                                "default",
+
+                            name:
+                                String(item[1]),
+
+                            type:
+                                "text",
+
+                            content:
+                                String(item[2])
+
+                        };
+
+                    }
+
+                    if (
+                        Array.isArray(item) &&
+                        item.length >= 2
+                    ) {
+
+                        return {
+
+                            id:
+                                crypto.randomUUID(),
+
+                            groupId:
+                                "default",
+
+                            name:
+                                String(item[0]),
+
+                            type:
+                                "text",
+
+                            content:
+                                String(item[1])
+
+                        };
+
+                    }
+
+                    return null;
+
+                })
+                .filter(item => item !== null)
+
+        };
+
+    }
+
+    else {
+
+        data = JSON.parse(
+            JSON.stringify(defaultData)
+        );
+
+    }
+
+}
+
+
+save();
+
+
+let draggedItemId = null;
+
+let draggedGroupId = null;
+
+let editingItemId = null;
+
+let groupModalMode = "add";
+
+let editingGroupId = null;
+
+let confirmAction = null;
+
+
+/* ==================================================
+   保存
+================================================== */
+
+function save() {
+
+    localStorage.setItem(
+        "copyToolData",
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* ==================================================
+   コピー通知
+================================================== */
+
+let toastTimer = null;
+
+
+function showToast() {
+
+    const toast =
+        document.getElementById("toast");
+
+    clearTimeout(toastTimer);
+
+    toast.classList.add("show");
+
+    toastTimer = setTimeout(
+        () => {
+
+            toast.classList.remove("show");
+
+        },
+        1500
+    );
+
+}
+
+
+/* ==================================================
+   コピー
+================================================== */
+
+async function copyText(text) {
+
+    try {
+
+        await navigator.clipboard.writeText(text);
+
+    }
+
+    catch (e) {
+
+        const textarea =
+            document.createElement("textarea");
+
+        textarea.value = text;
+
+        document.body.appendChild(textarea);
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        textarea.remove();
+
+    }
+
+    showToast();
+
+}
+
+
+/* ==================================================
+   グループ選択肢更新
+================================================== */
+
+function updateGroupSelects() {
+
+    const selects = [
+
+        document.getElementById("newGroup"),
+
+        document.getElementById("editGroup")
+
+    ];
+
+    selects.forEach(select => {
+
+        if (!select) {
+
+            return;
+
+        }
+
+        select.innerHTML = "";
+
+        data.groups.forEach(group => {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                group.id;
+
+            option.textContent =
+                group.name;
+
+            select.appendChild(option);
+
+        });
+
+    });
+
+}
+
+
+/* ==================================================
+   一覧表示
+================================================== */
+
+function render() {
+
+    const list =
+        document.getElementById("list");
+
+    const searchText =
+        document
+            .getElementById("search")
+            .value
+            .toLowerCase();
+
+    list.innerHTML = "";
+
+    updateGroupSelects();
+
+
+    data.groups.forEach(group => {
+
+        const groupItems =
+            data.items.filter(
+                item =>
+                    item.groupId === group.id
+            );
+
+
+        const filteredItems =
+            groupItems.filter(item => {
+
+                if (!searchText) {
+
+                    return true;
+
+                }
+
+                return (
+
+                    item.name +
+                    " " +
+                    item.content
+
+                )
+                .toLowerCase()
+                .includes(searchText);
+
+            });
+
+
+        if (
+            searchText &&
+            filteredItems.length === 0
+        ) {
+
+            return;
+
+        }
+
+
+        const groupElement =
+            document.createElement("div");
+
+        groupElement.className =
+            "group";
+
+        groupElement.draggable = true;
+
+
+        /* ==================================================
+           グループドラッグ開始
+        ================================================== */
+
+        groupElement.addEventListener(
+            "dragstart",
+            function(event) {
+
+                if (
+                    event.target.closest(".group-actions") ||
+                    event.target.closest(".group-toggle")
+                ) {
+
+                    event.preventDefault();
+
+                    return;
+
+                }
+
+                draggedGroupId =
+                    group.id;
+
+                draggedItemId = null;
+
+            }
+        );
+
+
+        /* ==================================================
+           グループドラッグオーバー
+        ================================================== */
+
+        groupElement.addEventListener(
+            "dragover",
+            function(event) {
+
+                event.preventDefault();
+
+                if (
+                    draggedGroupId &&
+                    draggedGroupId !== group.id
+                ) {
+
+                    groupElement.classList.add(
+                        "drag-over"
+                    );
+
+                }
+
+            }
+        );
+
+
+        groupElement.addEventListener(
+            "dragleave",
+            function() {
+
+                groupElement.classList.remove(
+                    "drag-over"
+                );
+
+            }
+        );
+
+
+        /* ==================================================
+           グループドロップ
+        ================================================== */
+
+        groupElement.addEventListener(
+            "drop",
+            function(event) {
+
+                event.preventDefault();
+
+                groupElement.classList.remove(
+                    "drag-over"
+                );
+
+
+                if (
+                    !draggedGroupId ||
+                    draggedGroupId === group.id
+                ) {
+
+                    return;
+
+                }
+
+
+                const fromIndex =
+                    data.groups.findIndex(
+                        g =>
+                            g.id === draggedGroupId
+                    );
+
+
+                const toIndex =
+                    data.groups.findIndex(
+                        g =>
+                            g.id === group.id
+                    );
+
+
+                if (
+                    fromIndex < 0 ||
+                    toIndex < 0
+                ) {
+
+                    return;
+
+                }
+
+
+                const moved =
+                    data.groups.splice(
+                        fromIndex,
+                        1
+                    )[0];
+
+
+                data.groups.splice(
+                    toIndex,
+                    0,
+                    moved
+                );
+
+
+                draggedGroupId = null;
+
+                save();
+
+                render();
+
+            }
+        );
+
+
+        /* ==================================================
+           グループヘッダー
+        ================================================== */
+
+        const header =
+            document.createElement("div");
+
+        header.className =
+            "group-header";
+
+
+        const toggle =
+            document.createElement("button");
+
+        toggle.className =
+            "group-toggle";
+
+        toggle.textContent =
+            group.collapsed
+                ? "▶"
+                : "▼";
+
+
+        toggle.onclick =
+            function(event) {
+
+                event.stopPropagation();
+
+                group.collapsed =
+                    !group.collapsed;
+
+                save();
+
+                render();
+
+            };
+
+
+        const groupName =
+            document.createElement("div");
+
+        groupName.className =
+            "group-name";
+
+        groupName.textContent =
+            group.name;
+
+
+        const groupActions =
+            document.createElement("div");
+
+        groupActions.className =
+            "group-actions";
+
+
+        /* ==================================================
+           グループ名変更
+        ================================================== */
+
+        const editGroupButton =
+            document.createElement("button");
+
+        editGroupButton.textContent =
+            "✏️";
+
+        editGroupButton.title =
+            "グループ名を変更";
+
+
+        editGroupButton.onclick =
+            function(event) {
+
+                event.stopPropagation();
+
+                document
+                    .getElementById(
+                        "groupModalTitle"
+                    )
+                    .textContent =
+                        "グループ名を変更";
+
+
+                document
+                    .getElementById(
+                        "groupNameInput"
+                    )
+                    .value =
+                        group.name;
+
+
+                groupModalMode =
+                    "edit";
+
+
+                editingGroupId =
+                    group.id;
+
+
+                document
+                    .getElementById(
+                        "groupModalBg"
+                    )
+                    .style.display =
+                        "block";
+
+
+                document
+                    .getElementById(
+                        "groupNameInput"
+                    )
+                    .focus();
+
+            };
+
+
+        /* ==================================================
+           グループ削除
+        ================================================== */
+
+        const deleteGroupButton =
+            document.createElement("button");
+
+        deleteGroupButton.textContent =
+            "🗑️";
+
+        deleteGroupButton.title =
+            "グループを削除";
+
+
+        deleteGroupButton.onclick =
+            function(event) {
+
+                event.stopPropagation();
+
+
+                if (
+                    data.groups.length <= 1
+                ) {
+
+                    openConfirmModal(
+                        "削除できません",
+                        "最後のグループは削除できません。",
+                        null
+                    );
+
+                    return;
+
+                }
+
+
+                openConfirmModal(
+
+                    "グループを削除",
+
+                    "グループ「" +
+                    group.name +
+                    "」を削除しますか？\n\n中の項目は別のグループに移動します。",
+
+                    function() {
+
+                        const fallback =
+                            data.groups.find(
+                                g =>
+                                    g.id !== group.id
+                            );
+
+
+                        data.items.forEach(item => {
+
+                            if (
+                                item.groupId ===
+                                group.id
+                            ) {
+
+                                item.groupId =
+                                    fallback.id;
+
+                            }
+
+                        });
+
+
+                        data.groups =
+                            data.groups.filter(
+                                g =>
+                                    g.id !== group.id
+                            );
+
+
+                        save();
+
+                        render();
+
+                    }
+
+                );
+
+            };
+
+
+        groupActions.appendChild(
+            editGroupButton
+        );
+
+        groupActions.appendChild(
+            deleteGroupButton
+        );
+
+
+        header.appendChild(
+            toggle
+        );
+
+        header.appendChild(
+            groupName
+        );
+
+        header.appendChild(
+            groupActions
+        );
+
+
+        groupElement.appendChild(
+            header
+        );
+
+
+        /* ==================================================
+           項目
+        ================================================== */
+
+        const itemsContainer =
+            document.createElement("div");
+
+        itemsContainer.className =
+            "group-items";
+
+
+        if (group.collapsed) {
+
+            itemsContainer.classList.add(
+                "collapsed"
+            );
+
+        }
+
+
+        filteredItems.forEach(item => {
+
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "card";
+
+            card.draggable = true;
+
+
+            const drag =
+                document.createElement("span");
+
+            drag.className =
+                "drag";
+
+            drag.textContent =
+                "↕️";
+
+            drag.title =
+                "ドラッグして並び替え";
+
+
+            const nameArea =
+                document.createElement("div");
+
+            nameArea.className =
+                "name-area";
+
+
+            const name =
+                document.createElement("div");
+
+            name.className =
+                "name";
+
+            name.textContent =
+                item.name;
+
+
+            if (
+                item.type === "text"
+            ) {
+
+                const tooltip =
+                    document.createElement("div");
+
+                tooltip.className =
+                    "tooltip";
+
+                tooltip.textContent =
+                    item.content;
+
+                nameArea.appendChild(
+                    tooltip
+                );
+
+            }
+
+
+            nameArea.appendChild(
+                name
+            );
+
+
+            const actions =
+                document.createElement("div");
+
+            actions.className =
+                "actions";
+
+
+            /* ==================================================
+               Text
+            ================================================== */
+
+            if (
+                item.type === "text"
+            ) {
+
+                const copyButton =
+                    document.createElement("button");
+
+                copyButton.textContent =
+                    "📋 Copy";
+
+                copyButton.title =
+                    "コピー";
+
+                copyButton.onclick =
+                    () =>
+                        copyText(
+                            item.content
+                        );
+
+                actions.appendChild(
+                    copyButton
+                );
+
+            }
+
+
+            /* ==================================================
+               URL
+            ================================================== */
+
+            else {
+
+                const openButton =
+                    document.createElement("button");
+
+                openButton.textContent =
+                    "🔗 Open";
+
+                openButton.title =
+                    "URLを開く";
+
+                openButton.onclick =
+                    () =>
+                        window.open(
+                            item.content,
+                            "_blank"
+                        );
+
+                actions.appendChild(
+                    openButton
+                );
+
+            }
+
+
+            /* ==================================================
+               編集
+            ================================================== */
+
+            const editButton =
+                document.createElement("button");
+
+            editButton.textContent =
+                "✏️";
+
+            editButton.title =
+                "編集";
+
+            editButton.onclick =
+                () =>
+                    openEdit(
+                        item.id
+                    );
+
+
+            /* ==================================================
+               削除
+            ================================================== */
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.textContent =
+                "🗑️";
+
+            deleteButton.title =
+                "削除";
+
+            deleteButton.onclick =
+                () =>
+                    deleteItem(
+                        item.id
+                    );
+
+
+            actions.appendChild(
+                editButton
+            );
+
+            actions.appendChild(
+                deleteButton
+            );
+
+
+            card.appendChild(
+                drag
+            );
+
+            card.appendChild(
+                nameArea
+            );
+
+            card.appendChild(
+                actions
+            );
+
+
+            /* ==================================================
+               項目ドラッグ
+            ================================================== */
+
+            card.addEventListener(
+                "dragstart",
+                function(event) {
+
+                    event.stopPropagation();
+
+                    draggedItemId =
+                        item.id;
+
+                    draggedGroupId =
+                        null;
+
+                }
+            );
+
+
+            card.addEventListener(
+                "dragover",
+                function(event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                    card.classList.add(
+                        "drag-over"
+                    );
+
+                }
+            );
+
+
+            card.addEventListener(
+                "dragleave",
+                function() {
+
+                    card.classList.remove(
+                        "drag-over"
+                    );
+
+                }
+            );
+
+
+            card.addEventListener(
+                "drop",
+                function(event) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+                    card.classList.remove(
+                        "drag-over"
+                    );
+
+
+                    if (
+                        draggedItemId ===
+                        item.id
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    if (
+                        !draggedItemId
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const fromIndex =
+                        data.items.findIndex(
+                            i =>
+                                i.id ===
+                                draggedItemId
+                        );
+
+
+                    const toIndex =
+                        data.items.findIndex(
+                            i =>
+                                i.id ===
+                                item.id
+                        );
+
+
+                    if (
+                        fromIndex < 0 ||
+                        toIndex < 0
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const moved =
+                        data.items.splice(
+                            fromIndex,
+                            1
+                        )[0];
+
+
+                    data.items.splice(
+                        toIndex,
+                        0,
+                        moved
+                    );
+
+
+                    draggedItemId =
+                        null;
+
+                    save();
+
+                    render();
+
+                }
+            );
+
+
+            itemsContainer.appendChild(
+                card
+            );
+
+        });
+
+
+        groupElement.appendChild(
+            itemsContainer
+        );
+
+
+        list.appendChild(
+            groupElement
+        );
+
+    });
+
+}
+
+
+/* ==================================================
+   グループ追加
+================================================== */
+
+function addGroup() {
+
+    groupModalMode =
+        "add";
+
+    editingGroupId =
+        null;
+
+
+    document
+        .getElementById(
+            "groupModalTitle"
+        )
+        .textContent =
+            "新しいグループを作成";
+
+
+    document
+        .getElementById(
+            "groupNameInput"
+        )
+        .value =
+            "";
+
+
+    document
+        .getElementById(
+            "groupModalBg"
+        )
+        .style.display =
+            "block";
+
+
+    document
+        .getElementById(
+            "groupNameInput"
+        )
+        .focus();
+
+}
+
+
+/* ==================================================
+   グループモーダル保存
+================================================== */
+
+function saveGroupModal() {
+
+    const name =
+        document
+            .getElementById(
+                "groupNameInput"
+            )
+            .value
+            .trim();
+
+
+    if (!name) {
+
+        return;
+
+    }
+
+
+    if (
+        groupModalMode ===
+        "add"
+    ) {
+
+        data.groups.push({
+
+            id:
+                crypto.randomUUID(),
+
+            name:
+                name,
+
+            collapsed:
+                false
+
+        });
+
+    }
+
+
+    else if (
+        groupModalMode ===
+        "edit"
+    ) {
+
+        const group =
+            data.groups.find(
+                g =>
+                    g.id ===
+                    editingGroupId
+            );
+
+
+        if (group) {
+
+            group.name =
+                name;
+
+        }
+
+    }
+
+
+    save();
+
+    closeGroupModal();
+
+    render();
+
+}
+
+
+/* ==================================================
+   グループモーダル閉じる
+================================================== */
+
+function closeGroupModal() {
+
+    document
+        .getElementById(
+            "groupModalBg"
+        )
+        .style.display =
+            "none";
+
+
+    groupModalMode =
+        "add";
+
+    editingGroupId =
+        null;
+
+}
+
+
+/* ==================================================
+   確認モーダル
+================================================== */
+
+function openConfirmModal(
+    title,
+    message,
+    action
+) {
+
+    document
+        .getElementById(
+            "confirmModalTitle"
+        )
+        .textContent =
+            title;
+
+
+    document
+        .getElementById(
+            "confirmModalMessage"
+        )
+        .textContent =
+            message;
+
+
+    confirmAction =
+        action;
+
+
+    document
+        .getElementById(
+            "confirmModalBg"
+        )
+        .style.display =
+            "block";
+
+}
+
+
+function executeConfirm() {
+
+    const action =
+        confirmAction;
+
+
+    closeConfirmModal();
+
+
+    if (typeof action === "function") {
+
+        action();
+
+    }
+
+}
+
+
+function closeConfirmModal() {
+
+    document
+        .getElementById(
+            "confirmModalBg"
+        )
+        .style.display =
+            "none";
+
+
+    confirmAction =
+        null;
+
+}
+
+
+/* ==================================================
+   追加フォーム
+================================================== */
+
+function toggleAdd() {
+
+    const box =
+        document.getElementById(
+            "addBox"
+        );
+
+
+    if (
+        box.style.display ===
+            "none" ||
+        box.style.display ===
+            ""
+    ) {
+
+        box.style.display =
+            "block";
+
+        updateGroupSelects();
+
+    }
+
+    else {
+
+        box.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* ==================================================
+   項目追加
+================================================== */
+
+function addItem() {
+
+    const name =
+        document
+            .getElementById(
+                "newName"
+            )
+            .value
+            .trim();
+
+
+    const type =
+        document
+            .getElementById(
+                "newType"
+            )
+            .value;
+
+
+    const content =
+        document
+            .getElementById(
+                "newText"
+            )
+            .value;
+
+
+    const groupId =
+        document
+            .getElementById(
+                "newGroup"
+            )
+            .value;
+
+
+    if (
+        !name ||
+        !content
+    ) {
+
+        showConfirmMessage(
+            "入力エラー",
+            "タイトルと内容を入力してください。"
+        );
+
+        return;
+
+    }
+
+
+    data.items.push({
+
+        id:
+            crypto.randomUUID(),
+
+        groupId:
+            groupId,
+
+        name:
+            name,
+
+        type:
+            type,
+
+        content:
+            content
+
+    });
+
+
+    save();
+
+    render();
+
+
+    document
+        .getElementById(
+            "newName"
+        )
+        .value =
+            "";
+
+
+    document
+        .getElementById(
+            "newText"
+        )
+        .value =
+            "";
+
+
+    toggleAdd();
+
+}
+
+
+/* ==================================================
+   編集
+================================================== */
+
+function openEdit(id) {
+
+    const item =
+        data.items.find(
+            i =>
+                i.id === id
+        );
+
+
+    if (!item) {
+
+        return;
+
+    }
+
+
+    editingItemId =
+        id;
+
+
+    document
+        .getElementById(
+            "editName"
+        )
+        .value =
+            item.name;
+
+
+    document
+        .getElementById(
+            "editType"
+        )
+        .value =
+            item.type;
+
+
+    document
+        .getElementById(
+            "editText"
+        )
+        .value =
+            item.content;
+
+
+    updateGroupSelects();
+
+
+    document
+        .getElementById(
+            "editGroup"
+        )
+        .value =
+            item.groupId;
+
+
+    document
+        .getElementById(
+            "editModalBg"
+        )
+        .style.display =
+            "block";
+
+}
+
+
+/* ==================================================
+   編集保存
+================================================== */
+
+function saveEdit() {
+
+    const item =
+        data.items.find(
+            i =>
+                i.id ===
+                editingItemId
+        );
+
+
+    if (!item) {
+
+        return;
+
+    }
+
+
+    const name =
+        document
+            .getElementById(
+                "editName"
+            )
+            .value
+            .trim();
+
+
+    const type =
+        document
+            .getElementById(
+                "editType"
+            )
+            .value;
+
+
+    const content =
+        document
+            .getElementById(
+                "editText"
+            )
+            .value;
+
+
+    const groupId =
+        document
+            .getElementById(
+                "editGroup"
+            )
+            .value;
+
+
+    if (
+        !name ||
+        !content
+    ) {
+
+        showConfirmMessage(
+            "入力エラー",
+            "タイトルと内容を入力してください。"
+        );
+
+        return;
+
+    }
+
+
+    item.name =
+        name;
+
+    item.type =
+        type;
+
+    item.content =
+        content;
+
+    item.groupId =
+        groupId;
+
+
+    save();
+
+    closeEdit();
+
+    render();
+
+}
+
+
+/* ==================================================
+   編集を閉じる
+================================================== */
+
+function closeEdit() {
+
+    document
+        .getElementById(
+            "editModalBg"
+        )
+        .style.display =
+            "none";
+
+
+    editingItemId =
+        null;
+
+}
+
+
+/* ==================================================
+   項目削除
+================================================== */
+
+function deleteItem(id) {
+
+    const item =
+        data.items.find(
+            i =>
+                i.id === id
+        );
+
+
+    if (!item) {
+
+        return;
+
+    }
+
+
+    openConfirmModal(
+
+        "項目を削除",
+
+        "「" +
+        item.name +
+        "」を削除しますか？",
+
+        function() {
+
+            data.items =
+                data.items.filter(
+                    i =>
+                        i.id !== id
+                );
+
+
+            save();
+
+            render();
+
+        }
+
+    );
+
+}
+
+
+/* ==================================================
+   バックアップ
+================================================== */
+
+function exportData() {
+
+    const blob =
+        new Blob(
+
+            [
+                JSON.stringify(
+                    data,
+                    null,
+                    2
+                )
+            ],
+
+            {
+                type:
+                    "application/json"
+            }
+
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    const date =
+        new Date()
+            .toISOString()
+            .slice(
+                0,
+                10
+            );
+
+
+    link.href =
+        url;
+
+
+    link.download =
+        "仕事用ツール_バックアップ_" +
+        date +
+        ".json";
+
+
+    link.click();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+/* ==================================================
+   復元
+================================================== */
+
+function importData(event) {
+
+    const file =
+        event.target.files[0];
+
+
+    if (!file) {
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e) {
+
+            try {
+
+                const imported =
+                    JSON.parse(
+                        e.target.result
+                    );
+
+
+                if (
+                    !imported.groups ||
+                    !imported.items
+                ) {
+
+                    throw new Error();
+
+                }
+
+
+                openConfirmModal(
+
+                    "バックアップを復元",
+
+                    "現在のデータをバックアップデータで置き換えますか？",
+
+                    function() {
+
+                        data =
+                            imported;
+
+
+                        save();
+
+                        render();
+
+                        showConfirmMessage(
+                            "復元完了",
+                            "バックアップを復元しました。"
+                        );
+
+                    }
+
+                );
+
+            }
+
+            catch (error) {
+
+                showConfirmMessage(
+                    "復元エラー",
+                    "バックアップファイルを読み込めませんでした。"
+                );
+
+            }
+
+
+            event.target.value =
+                "";
+
+        };
+
+
+    reader.readAsText(
+        file,
+        "utf-8"
+    );
+
+}
+
+
+/* ==================================================
+   初期状態
+================================================== */
+
+function resetData() {
+
+    openConfirmModal(
+
+        "初期状態に戻す",
+
+        "初期状態に戻しますか？\n\n現在のデータはすべて消えます。",
+
+        function() {
+
+            data =
+                JSON.parse(
+                    JSON.stringify(
+                        defaultData
+                    )
+                );
+
+
+            data.items.forEach(
+                item => {
+
+                    item.id =
+                        crypto.randomUUID();
+
+                }
+            );
+
+
+            save();
+
+            render();
+
+        }
+
+    );
+
+}
+
+
+/* ==================================================
+   確認メッセージ
+================================================== */
+
+function showConfirmMessage(
+    title,
+    message
+) {
+
+    document
+        .getElementById(
+            "confirmModalTitle"
+        )
+        .textContent =
+            title;
+
+
+    document
+        .getElementById(
+            "confirmModalMessage"
+        )
+        .textContent =
+            message;
+
+
+    confirmAction =
+        null;
+
+
+    document
+        .getElementById(
+            "confirmModalBg"
+        )
+        .style.display =
+            "block";
+
+}
+
+
+/* ==================================================
+   検索
+================================================== */
+
+document
+    .getElementById(
+        "search"
+    )
+    .addEventListener(
+        "input",
+        render
+    );
+
+
+/* ==================================================
+   モーダル背景クリック
+================================================== */
+
+document
+    .getElementById(
+        "groupModalBg"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeGroupModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "editModalBg"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeEdit();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "confirmModalBg"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeConfirmModal();
+
+            }
+
+        }
+    );
+
+
+/* ==================================================
+   初回表示
+================================================== */
+
+render();
+
+if (localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark");
+}
+
+document.getElementById("themeBtn").onclick = function () {
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains("dark") ? "dark" : "light"
+    );
+
+};
+
+document.getElementById("themeBtn").onclick = function () {
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "theme",
+        document.body.classList.contains("dark") ? "dark" : "light"
+    );
+
+};
+
+function openSettings() {
+    document.getElementById("settingsModal").style.display="flex";
+    document.body.style.overflow="hidden";
+}
+
+function closeSettings() {
+    document.getElementById("settingsModal").style.display="none";
+    document.body.style.overflow="";
+}
+
+// =========================
+// モーダル外クリックで閉じる
+// =========================
+
+document.addEventListener("click",function(e){
+ const modal=document.getElementById("settingsModal");
+ if(!modal||modal.style.display!=="flex")return;
+ if(e.target===modal) closeSettings();
+});
+document.querySelector(".modal-content")?.addEventListener("click",e=>e.stopPropagation());
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeSettings();});
+
+// Group header full-width click
+document.addEventListener('click', function(e){
+  const header=e.target.closest('.group-header,[data-group-header]');
+  if(!header) return;
+  if(e.target.closest('button,.action-btn,.group-menu')) return;
+  const toggle=header.querySelector('button,[data-toggle],.toggle');
+  if(toggle){ toggle.click(); }
+});
+
+
+// UX enhancements
+document.addEventListener("dragstart",e=>{
+ const c=e.target.closest(".card");
+ if(c) c.classList.add("dragging");
+});
+document.addEventListener("dragend",e=>{
+ const c=e.target.closest(".card");
+ if(c) c.classList.remove("dragging");
+ document.querySelectorAll(".drop-target").forEach(x=>x.classList.remove("drop-target"));
+});
+document.addEventListener("dragenter",e=>{
+ const g=e.target.closest(".group,.card-list,.cards");
+ if(g) g.classList.add("drop-target");
+});
+document.addEventListener("dragleave",e=>{
+ const g=e.target.closest(".group,.card-list,.cards");
+ if(g) g.classList.remove("drop-target");
+});
+
+</script>
+<div id="settingsModal" class="settings-modal" style="display:none;">
+    <div class="modal-content">
+        <h2>⚙️ 設定</h2>
+
+        <button onclick="exportData()">💾 バックアップ</button>
+        <button onclick="document.getElementById('importFile').click()">📥 復元</button>
+        <button onclick="resetData()">🔄 初期状態に戻す</button>
+
+        <hr>
+
+        <button onclick="closeSettings()">閉じる</button>
+    </div>
+</div>
+</body>
+
+</html>
