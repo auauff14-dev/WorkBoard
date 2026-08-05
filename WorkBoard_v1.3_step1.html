@@ -465,6 +465,13 @@ body.dark .modal button {
 .dragging{opacity:.75;transform:scale(1.02);box-shadow:0 12px 24px rgba(0,0,0,.28)!important;}
 .drop-target{outline:2px solid #3b82f6;outline-offset:2px;}
 
+/* コンテキストメニュー */
+#contextMenu{position:absolute;min-width:160px;background:#ffffff;color:#222;border:1px solid #bbb;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.2);padding:6px;z-index:20000;display:none}
+#contextMenu .menu-item{padding:8px 10px;cursor:pointer;border-radius:4px}
+#contextMenu .menu-item:hover{background:#f0f4f8}
+body.dark #contextMenu{background:#2d2d2d;color:#f5f5f5;border:1px solid #4b5563;box-shadow:0 6px 20px rgba(0,0,0,.6)}
+body.dark #contextMenu .menu-item:hover{background:#374151}
+
 </style>
 
 </head>
@@ -1279,48 +1286,11 @@ function render() {
 
                 event.stopPropagation();
 
-                document
-                    .getElementById(
-                        "groupModalTitle"
-                    )
-                    .textContent =
-                        "グループ名を変更";
-
-
-                document
-                    .getElementById(
-                        "groupNameInput"
-                    )
-                    .value =
-                        group.name;
-
-
-                groupModalMode =
-                    "edit";
-
-
-                editingGroupId =
-                    group.id;
-
-
-                document
-                    .getElementById(
-                        "groupModalBg"
-                    )
-                    .style.display =
-                        "block";
-
-
-                document
-                    .getElementById(
-                        "groupNameInput"
-                    )
-                    .focus();
+                openGroupEdit(group.id);
 
             };
 
-        groupName.ondblclick =
-            editGroupButton.onclick;
+        // グループ名のダブルクリック編集は廃止（右クリックUIへ移行）
 
 
         /* ==================================================
@@ -1433,6 +1403,16 @@ function render() {
         groupElement.appendChild(
             header
         );
+
+        // グループヘッダー右クリックでコンテキストメニューを表示
+        header.addEventListener('contextmenu', function(event){
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            showContextMenu(event.clientX, event.clientY, 'group', group.id);
+
+        });
 
 
         /* ==================================================
@@ -1780,6 +1760,24 @@ function render() {
                 }
             );
 
+            // カード右クリック（コンテキストメニュー）
+            card.addEventListener(
+                "contextmenu",
+                function(event) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    showContextMenu(
+                        event.clientX,
+                        event.clientY,
+                        'card',
+                        item.id
+                    );
+
+                }
+            );
+
 
             itemsContainer.appendChild(
                 card
@@ -1944,6 +1942,115 @@ function closeGroupModal() {
         null;
 
 }
+
+
+/* ==================================================
+   グループ編集を開く（共通ハンドラ）
+================================================== */
+
+function openGroupEdit(groupId) {
+
+    const group = data.groups.find(g => g.id === groupId);
+
+    if (!group) return;
+
+    document.getElementById("groupModalTitle").textContent = "グループ名を変更";
+
+    document.getElementById("groupNameInput").value = group.name;
+
+    groupModalMode = "edit";
+
+    editingGroupId = groupId;
+
+    document.getElementById("groupModalBg").style.display = "block";
+
+    document.getElementById("groupNameInput").focus();
+
+}
+
+
+/* ==================================================
+   カード用コンテキストメニュー
+================================================== */
+
+function showContextMenu(x, y, kind, id) {
+
+    let menu = document.getElementById('contextMenu');
+
+    if (!menu) {
+
+        menu = document.createElement('div');
+
+        menu.id = 'contextMenu';
+
+        const makeItem = (label, handler) => {
+
+            const el = document.createElement('div');
+
+            el.className = 'menu-item';
+
+            el.textContent = label;
+
+            el.addEventListener('click', (e) => {
+
+                e.stopPropagation();
+                try { handler(); } catch (err) { console.error(err); }
+                hideContextMenu();
+
+            });
+
+            return el;
+
+        };
+
+        document.body.appendChild(menu);
+
+    }
+
+    // メニュー中身を差し替え
+    menu.innerHTML = '';
+
+    if (kind === 'card') {
+
+        menu.appendChild(createMenuItem('編集', () => openEdit(id)));
+        menu.appendChild(createMenuItem('色変更', () => changeItemColor(id)));
+
+    }
+
+    else if (kind === 'group') {
+
+        menu.appendChild(createMenuItem('編集', () => openGroupEdit(id)));
+        menu.appendChild(createMenuItem('色変更', () => changeGroupColor(id)));
+
+    }
+
+    // 位置調整
+    menu.style.left = (x + 2) + 'px';
+    menu.style.top = (y + 2) + 'px';
+    menu.style.display = 'block';
+
+    function createMenuItem(label, handler) {
+        const el = document.createElement('div');
+        el.className = 'menu-item';
+        el.textContent = label;
+        el.addEventListener('click', (e) => { e.stopPropagation(); handler(); hideContextMenu(); });
+        el.addEventListener('mouseenter', () => el.style.background = '');
+        return el;
+    }
+
+}
+
+function hideContextMenu() {
+    const menu = document.getElementById('contextMenu');
+    if (menu) menu.style.display = 'none';
+}
+
+function changeItemColor(id) { console.log('changeItemColor', id); }
+function changeGroupColor(id) { console.log('changeGroupColor', id); }
+
+// クリックや他のコンテキストメニューで閉じる
+document.addEventListener('click', function() { hideContextMenu(); });
+document.addEventListener('contextmenu', function(e) { if (!e.target.closest('.card') && !e.target.closest('.group-header')) hideContextMenu(); });
 
 
 /* ==================================================
