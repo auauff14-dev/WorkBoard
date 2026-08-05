@@ -79,17 +79,10 @@ button:hover {
     padding: 5px 7px;
     min-height: 32px;
     cursor: grab;
+    transition: background 0.18s ease;
 }
-
-.group-header:active {
-    cursor: grabbing;
-}
-
-.group-toggle {
-    border: none;
-    background: transparent;
-    padding: 1px 3px;
-    font-size: 13px;
+.group-header:hover {
+    background: #dde6f1;
 }
 
 .group-toggle:hover {
@@ -117,8 +110,8 @@ button:hover {
     padding-top: 3px;
 }
 
-.group-items.collapsed {
-    display: none;
+.group-header:hover {
+    background: #dfe7f2;
 }
 
 .card {
@@ -132,32 +125,14 @@ button:hover {
     align-items: center;
     gap: 6px;
     min-height: 34px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-.drag {
-    cursor: grab;
-    color: #888;
-    font-size: 15px;
-    padding: 1px 2px;
-}
-
-.drag:active {
-    cursor: grabbing;
-}
-
-.name-area {
-    flex: 1;
-    min-width: 0;
-    position: relative;
-    padding: 3px 2px;
-    cursor: default;
-}
-
-.name {
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.16);
+    border-color: #cbd5e1;
+    background: #f8fbff;
 }
 
 .tooltip {
@@ -192,21 +167,52 @@ button:hover {
     display: block;
 }
 
+.name-area {
+    flex: 1;
+    min-width: 0;
+}
+
 .actions {
     display: flex;
-    gap: 3px;
+    align-items: center;
+    gap: 4px;
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.18s ease;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.card:hover .actions {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .actions button {
-    padding: 4px 7px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
     font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+    min-height: 24px;
 }
 
-.actions button:first-child {
-    min-width: 80px;
-    padding: 4px 10px;
-    font-size: 13px;
-    font-weight: bold;
+.actions button.copy-open {
+    padding: 4px 12px;
+    min-width: 72px;
+}
+
+.actions button.action-edit,
+.actions button.action-delete {
+    min-width: 28px;
+    width: 28px;
+    padding: 4px 6px;
+}
+
+.actions button.action-edit {
+    margin-left: auto;
 }
 
 #addBox {
@@ -279,17 +285,30 @@ button:hover {
     z-index: 500;
 }
 
+.modal-bg .modal {
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.modal-bg.closing .modal {
+    opacity: 0;
+    transform: translate(-50%,-50%) scale(0.98);
+}
+
 .modal {
-    width: 90%;
-    max-width: 500px;
-    background: white;
-    border-radius: 8px;
-    padding: 15px;
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.98);
     box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    background: white;
+    color: #222;
+    border-radius: 10px;
+    padding: 16px 18px;
+    width: min(92vw, 380px);
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 40px);
+    overflow: auto;
+    box-sizing: border-box;
 }
 
 .modal h3 {
@@ -328,7 +347,9 @@ body.dark textarea::placeholder{
 .modal-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 5px;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .confirm-message {
@@ -397,6 +418,9 @@ body.dark .group-header{
     background:#374151;
     border-color:#4b5563;
 }
+body.dark .group-header:hover {
+    background: #45556e;
+}
 
 body.dark .group-name{
     color:#ffffff;
@@ -461,7 +485,6 @@ body.dark .modal button {
     border: 1px solid #4b5563;
 }
 
-.card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(0,0,0,.18);transition:.18s;}
 .dragging{opacity:.75;transform:scale(1.02);box-shadow:0 12px 24px rgba(0,0,0,.28)!important;}
 .drop-target{outline:2px solid #3b82f6;outline-offset:2px;}
 
@@ -471,6 +494,33 @@ body.dark .modal button {
 #contextMenu .menu-item:hover{background:#f0f4f8}
 body.dark #contextMenu{background:#2d2d2d;color:#f5f5f5;border:1px solid #4b5563;box-shadow:0 6px 20px rgba(0,0,0,.6)}
 body.dark #contextMenu .menu-item:hover{background:#374151}
+/* UI animations */
+.group-items{
+    overflow: hidden;
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.18s ease, opacity 0.18s ease;
+}
+.group-items.collapsed{
+    max-height: 0;
+    opacity: 0;
+}
+
+/* cards appear animation */
+.card{opacity:0;transform:translateY(6px);transition:opacity 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease}
+.card.appear{opacity:1;transform:none}
+
+/* modal open/close */
+.modal{transition:transform 0.18s ease, opacity 0.18s ease;transform:translate(-50%,-50%) scale(0.98);opacity:0}
+.modal-bg[style*="display: block"] .modal{transform:translate(-50%,-50%) scale(1);opacity:1}
+.modal-bg.closing .modal{opacity:0;transform:translate(-50%,-50%) scale(0.98)}
+
+/* button hover slight lift */
+button{transition:transform 0.12s ease}
+button:hover{transform:translateY(-1px)}
+
+/* context menu fade (JS will toggle opacity/transform) */
+#contextMenu{opacity:0;transform:translateY(-6px);transition:opacity 0.16s ease, transform 0.16s ease}
 
 </style>
 
@@ -882,6 +932,8 @@ let groupModalMode = "add";
 let editingGroupId = null;
 
 let confirmAction = null;
+ 
+// removed color-selection state (feature rolled back)
 
 
 /* ==================================================
@@ -1222,6 +1274,11 @@ function render() {
         header.className =
             "group-header";
 
+        // header uses default styles; color feature removed
+        header.style.background = '';
+        header.style.color = '';
+        header.style.borderColor = '';
+
 
         const toggle =
             document.createElement("button");
@@ -1444,6 +1501,11 @@ function render() {
             card.className =
                 "card";
 
+            // card uses default styles; color feature removed
+            card.style.background = '';
+            card.style.color = '';
+            card.style.borderColor = '';
+
             card.draggable = true;
 
 
@@ -1520,6 +1582,7 @@ function render() {
                 const copyButton =
                     document.createElement("button");
 
+                copyButton.className = 'copy-open';
                 copyButton.textContent =
                     "📋 Copy";
 
@@ -1548,6 +1611,7 @@ function render() {
                 const openButton =
                     document.createElement("button");
 
+                openButton.className = 'copy-open';
                 openButton.textContent =
                     "🔗 Open";
 
@@ -1574,6 +1638,7 @@ function render() {
 
             const editButton =
                 document.createElement("button");
+            editButton.className = 'action-edit';
 
             editButton.textContent =
                 "✏️";
@@ -1594,6 +1659,7 @@ function render() {
 
             const deleteButton =
                 document.createElement("button");
+            deleteButton.className = 'action-delete';
 
             deleteButton.textContent =
                 "🗑️";
@@ -1797,7 +1863,18 @@ function render() {
 
     });
 
-}
+
+        // fade-in cards after render
+        requestAnimationFrame(() => {
+            document.querySelectorAll('#list .card').forEach(c => {
+                c.classList.remove('appear');
+                // force reflow
+                void c.offsetWidth;
+                c.classList.add('appear');
+            });
+        });
+
+    }
 
 
 /* ==================================================
@@ -1927,13 +2004,14 @@ function saveGroupModal() {
 
 function closeGroupModal() {
 
-    document
-        .getElementById(
+    const modalBg = document.getElementById(
             "groupModalBg"
-        )
-        .style.display =
-            "none";
-
+        );
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = "none";
+        modalBg.classList.remove('closing');
+    }, 180);
 
     groupModalMode =
         "add";
@@ -1975,6 +2053,8 @@ function openGroupEdit(groupId) {
 
 function showContextMenu(x, y, kind, id) {
 
+    // color feature removed; do not track selected ids
+
     let menu = document.getElementById('contextMenu');
 
     if (!menu) {
@@ -2011,23 +2091,22 @@ function showContextMenu(x, y, kind, id) {
     menu.innerHTML = '';
 
     if (kind === 'card') {
-
         menu.appendChild(createMenuItem('編集', () => openEdit(id)));
-        menu.appendChild(createMenuItem('色変更', () => changeItemColor(id)));
-
     }
-
     else if (kind === 'group') {
-
         menu.appendChild(createMenuItem('編集', () => openGroupEdit(id)));
-        menu.appendChild(createMenuItem('色変更', () => changeGroupColor(id)));
-
     }
 
-    // 位置調整
+    // 位置調整・フェードイン
     menu.style.left = (x + 2) + 'px';
     menu.style.top = (y + 2) + 'px';
+    menu.style.opacity = '0';
+    menu.style.transform = 'translateY(-6px)';
     menu.style.display = 'block';
+    requestAnimationFrame(() => {
+        menu.style.opacity = '1';
+        menu.style.transform = 'translateY(0)';
+    });
 
     function createMenuItem(label, handler) {
         const el = document.createElement('div');
@@ -2042,15 +2121,18 @@ function showContextMenu(x, y, kind, id) {
 
 function hideContextMenu() {
     const menu = document.getElementById('contextMenu');
-    if (menu) menu.style.display = 'none';
+    if (menu) {
+        menu.style.opacity = '0';
+        menu.style.transform = 'translateY(-6px)';
+        setTimeout(() => { if (menu) menu.style.display = 'none'; }, 180);
+    }
 }
 
-function changeItemColor(id) { console.log('changeItemColor', id); }
-function changeGroupColor(id) { console.log('changeGroupColor', id); }
+// color change feature removed
 
-// クリックや他のコンテキストメニューで閉じる
+// color feature removed; keep contextmenu hide behavior
 document.addEventListener('click', function() { hideContextMenu(); });
-document.addEventListener('contextmenu', function(e) { if (!e.target.closest('.card') && !e.target.closest('.group-header')) hideContextMenu(); });
+document.addEventListener('contextmenu', function(e) { if (!e.target.closest('.card') && !e.target.closest('.group-header')) { hideContextMenu(); } });
 
 
 /* ==================================================
@@ -2113,13 +2195,14 @@ function executeConfirm() {
 
 function closeConfirmModal() {
 
-    document
-        .getElementById(
+    const modalBg = document.getElementById(
             "confirmModalBg"
-        )
-        .style.display =
-            "none";
-
+        );
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = "none";
+        modalBg.classList.remove('closing');
+    }, 180);
 
     confirmAction =
         null;
@@ -2322,12 +2405,9 @@ function openEdit(id) {
             item.groupId;
 
 
-    document
-        .getElementById(
-            "editModalBg"
-        )
-        .style.display =
-            "block";
+    const modalBg = document.getElementById("editModalBg");
+    modalBg.style.display = "block";
+    modalBg.classList.remove('closing');
 
 }
 
@@ -2429,13 +2509,14 @@ function saveEdit() {
 
 function closeEdit() {
 
-    document
-        .getElementById(
+    const modalBg = document.getElementById(
             "editModalBg"
-        )
-        .style.display =
-            "none";
-
+        );
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = "none";
+        modalBg.classList.remove('closing');
+    }, 180);
 
     editingItemId =
         null;
@@ -2846,12 +2927,18 @@ document.getElementById("themeBtn").onclick = function () {
 };
 
 function openSettings() {
-    document.getElementById("settingsModal").style.display="flex";
+    const modal = document.getElementById("settingsModal");
+    modal.style.display="flex";
+    modal.classList.remove('closing');
     document.body.style.overflow="hidden";
 }
 
 function closeSettings() {
-    document.getElementById("settingsModal").style.display="none";
+    const modal = document.getElementById("settingsModal");
+    modal.classList.add('closing');
+    setTimeout(() => {
+        modal.style.display="none";
+    }, 180);
     document.body.style.overflow="";
 }
 
