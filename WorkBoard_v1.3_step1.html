@@ -332,6 +332,20 @@ button:hover {
     resize: vertical;
 }
 
+.translate-actions,
+.translate-services {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.translate-actions button,
+.translate-services button {
+    flex: 1 1 auto;
+    min-width: 90px;
+}
+
 body.dark .modal input,
 body.dark .modal textarea,
 body.dark .modal select{
@@ -342,6 +356,41 @@ body.dark .modal select{
 body.dark input::placeholder,
 body.dark textarea::placeholder{
     color:#cbd5e1;
+}
+.translate-actions button span.small-note {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    line-height: 1.2;
+    opacity: 0.76;
+}
+.memo-indicator {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    background: white;
+    color: #222;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.16);
+    cursor: pointer;
+    z-index: 9998;
+    font-size: 13px;
+    transition: transform 0.12s ease, background 0.18s ease;
+}
+.memo-indicator:hover {
+    transform: translateY(-1px);
+    background: #eef5ff;
+}
+body.dark .memo-indicator {
+    background: #1f2937;
+    color: #f8fafc;
+    border-color: #374151;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+}
+.modal textarea#memoText {
+    min-height: 220px;
 }
 
 .modal-buttons {
@@ -551,6 +600,16 @@ title="設定">
 ⚙️
 </button>
 
+<button onclick="openTranslateModal()"
+title="翻訳">
+🌍 翻訳
+</button>
+
+<button onclick="openMemoModal()"
+title="メモ">
+📝 メモ
+</button>
+
 <input
     type="file"
     id="importFile"
@@ -750,6 +809,78 @@ URL
 OK
 </button>
 
+</div>
+
+</div>
+
+</div>
+
+
+<div
+    id="translateModalBg"
+    class="modal-bg"
+>
+
+<div class="modal">
+
+<h3>
+🌍 翻訳 Workspace
+</h3>
+
+<textarea
+    id="translateText"
+    placeholder="翻訳したい本文を入力してください。"
+></textarea>
+
+<div class="translate-actions">
+    <button type="button" onclick="pasteTranslateText()">
+        📋 貼り付け
+        <span class="small-note">（Ctrl+Vも可）</span>
+    </button>
+    <button type="button" onclick="clearTranslateText()">🗑 クリア</button>
+</div>
+
+<div class="translate-services">
+    <button type="button" onclick="openTranslateService('google')">🌐 Google Translate</button>
+    <button type="button" onclick="openTranslateService('deepl')">💎 DeepL</button>
+</div>
+
+<div class="modal-buttons">
+    <button type="button" onclick="closeTranslateModal()">閉じる</button>
+</div>
+
+</div>
+
+</div>
+
+<div id="memoIndicator" class="memo-indicator" onclick="openMemoModal()" style="display:none;">
+    📝 未処理メモがあります
+</div>
+
+<div
+    id="memoModalBg"
+    class="modal-bg"
+>
+
+<div class="modal">
+
+<h3>
+📝 メモ Workspace
+</h3>
+
+<textarea
+    id="memoText"
+    placeholder="メモを入力してください。"
+    oninput="saveMemoText()"
+></textarea>
+
+<div class="translate-actions">
+    <button type="button" onclick="confirmClearMemo()">🗑 クリア</button>
+    <button type="button" onclick="saveMemoToCard()">📦 カード化</button>
+</div>
+
+<div class="modal-buttons">
+    <button type="button" onclick="closeMemoModal()">閉じる</button>
 </div>
 
 </div>
@@ -2209,6 +2340,230 @@ function closeConfirmModal() {
 
 }
 
+function closeTranslateModal() {
+    const textarea = document.getElementById('translateText');
+    if (textarea) {
+        textarea.value = '';
+    }
+    const modalBg = document.getElementById("translateModalBg");
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = "none";
+        modalBg.classList.remove('closing');
+    }, 180);
+}
+
+function openTranslateModal() {
+    const translateBg = document.getElementById("translateModalBg");
+    const textarea = document.getElementById('translateText');
+    if (textarea) {
+        textarea.value = '';
+    }
+    translateBg.style.display = "block";
+    translateBg.classList.remove('closing');
+    setTimeout(() => {
+        textarea?.focus();
+    }, 0);
+}
+
+function saveMemoText() {
+    const text = document.getElementById('memoText')?.value || '';
+    localStorage.setItem('memoWorkspaceContent', text);
+    updateMemoIndicator();
+}
+
+function loadMemoText() {
+    return localStorage.getItem('memoWorkspaceContent') || '';
+}
+
+function openMemoModal() {
+    const modalBg = document.getElementById('memoModalBg');
+    const textarea = document.getElementById('memoText');
+    const content = loadMemoText();
+    if (textarea) {
+        textarea.value = content;
+    }
+    modalBg.style.display = 'block';
+    modalBg.classList.remove('closing');
+    setTimeout(() => {
+        textarea?.focus();
+    }, 0);
+}
+
+function closeMemoModal() {
+    const modalBg = document.getElementById('memoModalBg');
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = 'none';
+        modalBg.classList.remove('closing');
+    }, 180);
+}
+
+function confirmClearMemo() {
+    openConfirmModal(
+        'メモを削除',
+        'メモを削除しますか？',
+        function() {
+            localStorage.removeItem('memoWorkspaceContent');
+            const textarea = document.getElementById('memoText');
+            if (textarea) {
+                textarea.value = '';
+            }
+            updateMemoIndicator();
+        }
+    );
+}
+
+function ensureSavedMemoGroup() {
+    let group = data.groups.find(g => g.name === '保存メモ');
+    if (!group) {
+        group = {
+            id: crypto.randomUUID(),
+            name: '保存メモ',
+            collapsed: false
+        };
+        data.groups.push(group);
+        save();
+    }
+    return group.id;
+}
+
+function saveMemoToCard() {
+    const text = document.getElementById('memoText')?.value || '';
+    const trimmed = text.trim();
+    if (!trimmed) {
+        openConfirmModal(
+            'カード化できません',
+            'メモが空のため、カード化できません。',
+            null
+        );
+        return;
+    }
+
+    const lines = trimmed.split(/\r?\n/);
+    const title = lines.shift().trim() || '無題メモ';
+    const body = lines.join('\n').trim();
+    const groupId = ensureSavedMemoGroup();
+
+    data.items.push({
+        id: crypto.randomUUID(),
+        groupId,
+        name: title,
+        type: 'text',
+        content: body
+    });
+
+    save();
+    render();
+
+    openConfirmModal(
+        'カード化しました。',
+        'カード化しました。\n\nメモをクリアしますか？',
+        function() {
+            localStorage.removeItem('memoWorkspaceContent');
+            const textarea = document.getElementById('memoText');
+            if (textarea) {
+                textarea.value = '';
+            }
+            updateMemoIndicator();
+        }
+    );
+}
+
+function updateMemoIndicator() {
+    const text = loadMemoText();
+    const indicator = document.getElementById('memoIndicator');
+    if (!indicator) {
+        return;
+    }
+    if (text.trim().length > 0) {
+        indicator.style.display = 'block';
+    } else {
+        indicator.style.display = 'none';
+    }
+}
+
+async function pasteTranslateText() {
+    try {
+        const text = await navigator.clipboard.readText();
+        if (typeof text === 'string') {
+            document.getElementById('translateText').value = text;
+        }
+    }
+    catch (error) {
+        console.error('Clipboard paste failed', error);
+    }
+}
+
+function clearTranslateText() {
+    document.getElementById('translateText').value = '';
+}
+
+function detectTranslateDirection(text) {
+    const trimmed = text.trim();
+    if (!trimmed) {
+        return 'en-ja';
+    }
+
+    const japaneseChars = (trimmed.match(/[\u3040-\u30ff\u4e00-\u9faf]/g) || []).length;
+    const latinLetters = (trimmed.match(/[A-Za-z]/g) || []).length;
+    const digits = (trimmed.match(/[0-9]/g) || []).length;
+    const totalChars = trimmed.length;
+    const asciiOnly = /^[A-Za-z0-9\s\p{P}]+$/u.test(trimmed);
+
+    if (japaneseChars > 0) {
+        const japaneseRatio = japaneseChars / totalChars;
+        if (japaneseRatio >= 0.2) {
+            return 'ja-en';
+        }
+    }
+
+    if (asciiOnly) {
+        return 'en-ja';
+    }
+
+    if (latinLetters > 0) {
+        const latinRatio = latinLetters / totalChars;
+        if (latinRatio >= 0.5) {
+            return 'en-ja';
+        }
+    }
+
+    return 'unknown';
+}
+
+function openTranslateService(service) {
+    const text = document.getElementById('translateText').value || '';
+    let direction = detectTranslateDirection(text);
+
+    if (direction === 'unknown') {
+        const useEnglishToJapanese = window.confirm('文章の判定ができませんでした。英→日で開きますか？');
+        direction = useEnglishToJapanese ? 'en-ja' : 'ja-en';
+    }
+
+    const encoded = encodeURIComponent(text);
+    let url = '';
+
+    if (service === 'google') {
+        if (direction === 'en-ja') {
+            url = `https://translate.google.com/?sl=en&tl=ja&text=${encoded}&op=translate`;
+        } else {
+            url = `https://translate.google.com/?sl=ja&tl=en&text=${encoded}&op=translate`;
+        }
+    }
+    else if (service === 'deepl') {
+        if (direction === 'en-ja') {
+            url = `https://www.deepl.com/translator#en/ja/${encoded}`;
+        } else {
+            url = `https://www.deepl.com/translator#ja/en/${encoded}`;
+        }
+    }
+
+    if (url) {
+        window.open(url, '_blank');
+    }
+}
+
 
 /* ==================================================
    追加フォーム
@@ -2893,6 +3248,46 @@ document
         }
     );
 
+document
+    .getElementById(
+        "translateModalBg"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeTranslateModal();
+
+            }
+
+        }
+    );
+
+document
+    .getElementById(
+        "memoModalBg"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeMemoModal();
+
+            }
+
+        }
+    );
+
 
 /* ==================================================
    初回表示
@@ -2952,7 +3347,16 @@ document.addEventListener("click",function(e){
  if(e.target===modal) closeSettings();
 });
 document.querySelector(".modal-content")?.addEventListener("click",e=>e.stopPropagation());
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closeSettings();});
+document.addEventListener("keydown",function(e){
+    if (e.key === "Escape") {
+        const translateBg = document.getElementById("translateModalBg");
+        if (translateBg && translateBg.style.display === "block") {
+            closeTranslateModal();
+            return;
+        }
+        closeSettings();
+    }
+});
 
 // Group header full-width click
 document.addEventListener('click', function(e){
