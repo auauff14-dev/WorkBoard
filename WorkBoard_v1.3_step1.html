@@ -159,8 +159,12 @@ button:hover {
     overscroll-behavior: contain;
 }
 
-.name-area:hover .tooltip {
+.card[data-preview-enabled="true"] .name-area:hover .tooltip {
     display: block;
+}
+
+.card[data-preview-enabled="false"] .tooltip {
+    display: none !important;
 }
 
 .tooltip:hover {
@@ -217,9 +221,29 @@ button:hover {
 
 #addBox {
     display: none;
-    padding: 10px;
+    padding: 0;
+    background: rgba(0,0,0,0.35);
+    border: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+}
+
+#addBox .add-modal-panel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     background: white;
-    border-bottom: 1px solid #ddd;
+    color: #222;
+    border-radius: 10px;
+    padding: 16px 18px;
+    width: min(92vw, 420px);
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 40px);
+    overflow: auto;
+    box-sizing: border-box;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
 }
 
 #addBox input,
@@ -236,6 +260,20 @@ button:hover {
 #addBox textarea {
     min-height: 70px;
     resize: vertical;
+}
+
+body.dark #addBox .add-modal-panel {
+    background: #2d2d2d;
+    color: #ffffff;
+    border: 1px solid #4b5563;
+}
+
+body.dark #addBox input,
+body.dark #addBox textarea,
+body.dark #addBox select {
+    background: #374151;
+    color: #ffffff;
+    border: 1px solid #4b5563;
 }
 
 .form-label {
@@ -282,7 +320,12 @@ button:hover {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.35);
-    z-index: 500;
+    z-index: 10000;
+    isolation: isolate;
+}
+
+#confirmModalBg {
+    z-index: 10002;
 }
 
 .modal-bg .modal {
@@ -401,6 +444,39 @@ body.dark .memo-indicator {
     align-items: center;
 }
 
+#qrPreviewBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    margin: 8px 0 12px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 12px;
+}
+
+#qrPreviewBox .qr-empty {
+    text-align: center;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+#qrPreviewBox canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+body.dark #qrPreviewBox {
+    background: #374151;
+    border-color: #4b5563;
+}
+
+body.dark #qrPreviewBox .qr-empty {
+    color: #cbd5e1;
+}
+
 .confirm-message {
     white-space: pre-wrap;
     margin-bottom: 15px;
@@ -490,24 +566,74 @@ body.dark #hint{
 .settings-modal{
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.45);
+    background: rgba(0,0,0,.65);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 10001;
+    padding: 20px;
+    isolation: isolate;
 }
 
 .modal-content{
-    width: 320px;
+    position: relative;
+    z-index: 1;
+    width: min(92vw, 320px);
+    max-height: calc(100vh - 40px);
+    overflow: auto;
     background: white;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    margin: 20px;
 }
 
 body.dark .modal-content{
     background:#2d2d2d;
     color:white;
+}
+
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 12px 0 8px;
+}
+
+.settings-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid #d4dbe5;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.settings-option input {
+    margin: 2px 0 0;
+    flex-shrink: 0;
+}
+
+.settings-option .settings-label {
+    font-weight: 600;
+    display: block;
+}
+
+.settings-option .settings-help {
+    margin-top: 3px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #64748b;
+}
+
+body.dark .settings-option {
+    background: #374151;
+    border-color: #4b5563;
+}
+
+body.dark .settings-option .settings-help {
+    color: #cbd5e1;
 }
 
 body.dark .modal {
@@ -532,6 +658,14 @@ body.dark .modal button {
     background: #374151;
     color: #ffffff;
     border: 1px solid #4b5563;
+}
+.confirm-selected {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    background: #dbeafe;
+}
+body.dark .confirm-selected {
+    background: #2563eb;
 }
 
 .dragging{opacity:.75;transform:scale(1.02);box-shadow:0 12px 24px rgba(0,0,0,.28)!important;}
@@ -610,6 +744,11 @@ title="メモ">
 📝 メモ
 </button>
 
+<button onclick="openQrModal()"
+title="QR">
+📱 QR
+</button>
+
 <input
     type="file"
     id="importFile"
@@ -624,7 +763,11 @@ title="メモ">
 </div>
 
 
-<div id="addBox">
+<div id="addBox" class="modal-bg" style="display:none;">
+
+<div class="add-modal-panel">
+
+<h3>カードを追加</h3>
 
 <label class="form-label">
 タイトル
@@ -667,13 +810,12 @@ URL
 <select id="newGroup">
 </select>
 
-<button onclick="addItem()">
-登録
-</button>
+<div class="modal-buttons">
+<button onclick="addItem()">登録</button>
+<button onclick="closeAddBox()">閉じる</button>
+</div>
 
-<button onclick="toggleAdd()">
-閉じる
-</button>
+</div>
 
 </div>
 
@@ -801,12 +943,12 @@ URL
 
 <div class="modal-buttons">
 
-<button onclick="closeConfirmModal()">
-キャンセル
+<button id="confirmCancelBtn" type="button" onclick="closeConfirmModal()">
+いいえ
 </button>
 
-<button onclick="executeConfirm()">
-OK
+<button id="confirmOkBtn" type="button" onclick="executeConfirm()">
+はい
 </button>
 
 </div>
@@ -887,7 +1029,55 @@ OK
 
 </div>
 
+<div
+    id="qrModalBg"
+    class="modal-bg"
+>
 
+<div class="modal">
+
+<h3>
+📱 QR Workspace
+</h3>
+
+<div id="qrInputArea">
+    <input
+        id="qrUrl"
+        type="url"
+        inputmode="url"
+        placeholder="https://example.com"
+        onkeydown="handleQrInputKeydown(event)"
+    >
+
+    <div class="translate-actions">
+        <button type="button" onclick="pasteQrText()">📋 貼り付け</button>
+        <button type="button" onclick="clearQrWorkspaceInput()">🗑 クリア</button>
+    </div>
+
+    <div class="modal-buttons">
+        <button type="button" onclick="generateQrCode()">🔲 QR生成</button>
+    </div>
+</div>
+
+<div id="qrPreviewBox">
+    <div class="qr-empty">QRコードがここに表示されます</div>
+</div>
+
+<div class="translate-actions">
+    <button type="button" id="qrSaveBtn" onclick="saveQrPng()" disabled>💾 PNG保存</button>
+    <button type="button" id="qrCopyBtn" onclick="copyQrImage()" disabled>📋 QR画像コピー</button>
+</div>
+
+<div class="modal-buttons">
+    <button type="button" onclick="closeQrModal()">閉じる</button>
+</div>
+
+</div>
+
+</div>
+
+<script src="node_modules/qrcode-generator/dist/qrcode.js"></script>
+<script src="qrcode-local.js"></script>
 <script>
 
 /* ==================================================
@@ -1063,7 +1253,9 @@ let groupModalMode = "add";
 let editingGroupId = null;
 
 let confirmAction = null;
- 
+let confirmChoice = 'cancel';
+let confirmDialogOpen = false;
+
 // removed color-selection state (feature rolled back)
 
 
@@ -1078,6 +1270,78 @@ function save() {
         JSON.stringify(data)
     );
 
+}
+
+const defaultSettings = {
+    cardPreviewEnabled: true,
+    deleteConfirmEnabled: true
+};
+
+let settings = loadSettings();
+
+function loadSettings() {
+    try {
+        const stored = localStorage.getItem("copyToolSettings");
+        if (!stored) {
+            return { ...defaultSettings };
+        }
+
+        const parsed = JSON.parse(stored);
+        return {
+            ...defaultSettings,
+            ...parsed
+        };
+    }
+    catch (e) {
+        return { ...defaultSettings };
+    }
+}
+
+function saveSettings() {
+    localStorage.setItem(
+        "copyToolSettings",
+        JSON.stringify(settings)
+    );
+}
+
+function getSetting(key) {
+    return settings[key] ?? defaultSettings[key];
+}
+
+function setSetting(key, value) {
+    settings[key] = value;
+    saveSettings();
+
+    if (key === "cardPreviewEnabled") {
+        render();
+    }
+}
+
+function syncSettingsControls() {
+    const previewCheckbox = document.getElementById("settingPreviewEnabled");
+    if (previewCheckbox) {
+        previewCheckbox.checked = getSetting("cardPreviewEnabled");
+    }
+
+    const deleteCheckbox = document.getElementById("settingDeleteConfirmEnabled");
+    if (deleteCheckbox) {
+        deleteCheckbox.checked = getSetting("deleteConfirmEnabled");
+    }
+}
+
+function shouldShowDeleteConfirm(forceConfirm = false) {
+    return forceConfirm || getSetting("deleteConfirmEnabled");
+}
+
+function runWithConfirm({ title, message, action, forceConfirm = false }) {
+    if (!shouldShowDeleteConfirm(forceConfirm)) {
+        if (typeof action === "function") {
+            action();
+        }
+        return;
+    }
+
+    openConfirmModal(title, message, action);
 }
 
 
@@ -1516,15 +1780,15 @@ function render() {
                 }
 
 
-                openConfirmModal(
+                runWithConfirm({
 
-                    "グループを削除",
+                    title: "グループを削除",
 
-                    "グループ「" +
-                    group.name +
-                    "」を削除しますか？\n\n中の項目は別のグループに移動します。",
+                    message: "グループ「" +
+                        group.name +
+                        "」を削除しますか？\n\n中の項目は別のグループに移動します。",
 
-                    function() {
+                    action: function() {
 
                         const fallback =
                             data.groups.find(
@@ -1561,7 +1825,7 @@ function render() {
 
                     }
 
-                );
+                });
 
             };
 
@@ -1631,6 +1895,9 @@ function render() {
 
             card.className =
                 "card";
+
+            card.dataset.previewEnabled =
+                String(getSetting("cardPreviewEnabled"));
 
             // card uses default styles; color feature removed
             card.style.background = '';
@@ -2222,6 +2489,10 @@ function showContextMenu(x, y, kind, id) {
     menu.innerHTML = '';
 
     if (kind === 'card') {
+        const cardItem = data.items.find(item => item.id === id);
+        if (cardItem && cardItem.content && isValidQrUrl(cardItem.content)) {
+            menu.appendChild(createMenuItem('QR生成', () => generateQrFromCardUrl(cardItem.content)));
+        }
         menu.appendChild(createMenuItem('編集', () => openEdit(id)));
     }
     else if (kind === 'group') {
@@ -2259,6 +2530,204 @@ function hideContextMenu() {
     }
 }
 
+function isValidQrUrl(value) {
+    if (!value) {
+        return false;
+    }
+
+    try {
+        const url = new URL(value);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+    }
+    catch (error) {
+        return false;
+    }
+}
+
+function resetQrWorkspace() {
+    const input = document.getElementById('qrUrl');
+    if (input) {
+        input.value = '';
+    }
+
+    const inputArea = document.getElementById('qrInputArea');
+    if (inputArea) {
+        inputArea.style.display = 'block';
+    }
+
+    const previewBox = document.getElementById('qrPreviewBox');
+    if (previewBox) {
+        previewBox.innerHTML = '<div class="qr-empty">QRコードがここに表示されます</div>';
+    }
+
+    const saveBtn = document.getElementById('qrSaveBtn');
+    if (saveBtn) {
+        saveBtn.disabled = true;
+    }
+
+    const copyBtn = document.getElementById('qrCopyBtn');
+    if (copyBtn) {
+        copyBtn.disabled = true;
+    }
+}
+
+function handleQrInputKeydown(event) {
+    if (event.ctrlKey && event.key.toLowerCase() === 'v') {
+        event.preventDefault();
+        pasteQrText();
+    }
+}
+
+function setQrWorkspaceMode(mode) {
+    const inputArea = document.getElementById('qrInputArea');
+    if (inputArea) {
+        inputArea.style.display = mode === 'direct' ? 'none' : 'block';
+    }
+}
+
+function openQrModal(options = {}) {
+    const modalBg = document.getElementById('qrModalBg');
+    const directMode = Boolean(options.direct);
+    resetQrWorkspace();
+    setQrWorkspaceMode(directMode ? 'direct' : 'input');
+    modalBg.style.display = 'block';
+    modalBg.classList.remove('closing');
+    setTimeout(() => {
+        if (!directMode) {
+            const input = document.getElementById('qrUrl');
+            input?.focus();
+            return;
+        }
+
+        const url = options.url || '';
+        if (url) {
+            generateQrCode(url, { skipValidation: true });
+        }
+    }, 0);
+}
+
+function closeQrModal() {
+    const modalBg = document.getElementById('qrModalBg');
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = 'none';
+        modalBg.classList.remove('closing');
+        resetQrWorkspace();
+    }, 180);
+}
+
+async function pasteQrText() {
+    try {
+        const text = await navigator.clipboard.readText();
+        if (typeof text === 'string') {
+            document.getElementById('qrUrl').value = text;
+        }
+    }
+    catch (error) {
+        console.error('QR paste failed', error);
+    }
+}
+
+function clearQrWorkspaceInput() {
+    const input = document.getElementById('qrUrl');
+    if (input) {
+        input.value = '';
+    }
+}
+
+function renderQrCanvas(value) {
+    const previewBox = document.getElementById('qrPreviewBox');
+    previewBox.innerHTML = '';
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'qr-canvas';
+    canvas.width = 1024;
+    canvas.height = 1024;
+    canvas.style.width = 'min(100%, 320px)';
+    canvas.style.height = 'auto';
+    previewBox.appendChild(canvas);
+
+    const qrCanvas = window.WorkBoardQrLocal.createQrCode({
+        text: value,
+        size: 1024,
+        margin: 6,
+        dark: '#111827',
+        light: '#ffffff'
+    });
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(qrCanvas, 0, 0, canvas.width, canvas.height);
+
+    document.getElementById('qrSaveBtn').disabled = false;
+    document.getElementById('qrCopyBtn').disabled = false;
+}
+
+function generateQrCode(value = null, options = {}) {
+    const input = document.getElementById('qrUrl');
+    const resolvedValue = (value ?? input?.value ?? '').trim();
+
+    if (!resolvedValue) {
+        if (!options.skipValidation) {
+            showConfirmMessage('入力エラー', '有効なURLを入力してください。');
+        }
+        return;
+    }
+
+    if (!isValidQrUrl(resolvedValue) && !options.skipValidation) {
+        showConfirmMessage('入力エラー', '有効なURLを入力してください。');
+        return;
+    }
+
+    renderQrCanvas(resolvedValue);
+}
+
+async function saveQrPng() {
+    const canvas = document.querySelector('#qrPreviewBox canvas');
+    if (!canvas) {
+        return;
+    }
+
+    const link = document.createElement('a');
+    link.download = 'qr-code.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+}
+
+async function copyQrImage() {
+    const canvas = document.querySelector('#qrPreviewBox canvas');
+    if (!canvas) {
+        return;
+    }
+
+    const blob = await new Promise(resolve => {
+        canvas.toBlob(resolve, 'image/png');
+    });
+
+    if (!blob) {
+        return;
+    }
+
+    if (navigator.clipboard && window.ClipboardItem) {
+        try {
+            await navigator.clipboard.write([
+                new ClipboardItem({ 'image/png': blob })
+            ]);
+            showToast();
+            return;
+        }
+        catch (error) {
+            console.error('QR clipboard copy failed', error);
+        }
+    }
+
+    saveQrPng();
+}
+
+function generateQrFromCardUrl(url) {
+    openQrModal({ direct: true, url });
+}
+
 // color change feature removed
 
 // color feature removed; keep contextmenu hide behavior
@@ -2294,15 +2763,20 @@ function openConfirmModal(
 
     confirmAction =
         action;
+    confirmChoice = 'cancel';
+    confirmDialogOpen = true;
 
+    const modalBg = document.getElementById("confirmModalBg");
+    modalBg.style.display = "block";
+    modalBg.classList.remove('closing');
 
-    document
-        .getElementById(
-            "confirmModalBg"
-        )
-        .style.display =
-            "block";
-
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+    const okBtn = document.getElementById('confirmOkBtn');
+    if (cancelBtn && okBtn) {
+        cancelBtn.classList.add('confirm-selected');
+        okBtn.classList.remove('confirm-selected');
+        cancelBtn.focus();
+    }
 }
 
 
@@ -2323,6 +2797,26 @@ function executeConfirm() {
 
 }
 
+function chooseConfirmOption(next) {
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+    const okBtn = document.getElementById('confirmOkBtn');
+    if (!cancelBtn || !okBtn) {
+        return;
+    }
+
+    if (next === 'ok') {
+        confirmChoice = 'ok';
+        cancelBtn.classList.remove('confirm-selected');
+        okBtn.classList.add('confirm-selected');
+        okBtn.focus();
+    } else {
+        confirmChoice = 'cancel';
+        okBtn.classList.remove('confirm-selected');
+        cancelBtn.classList.add('confirm-selected');
+        cancelBtn.focus();
+    }
+}
+
 
 function closeConfirmModal() {
 
@@ -2337,6 +2831,8 @@ function closeConfirmModal() {
 
     confirmAction =
         null;
+    confirmChoice = 'cancel';
+    confirmDialogOpen = false;
 
 }
 
@@ -2400,10 +2896,10 @@ function closeMemoModal() {
 }
 
 function confirmClearMemo() {
-    openConfirmModal(
-        'メモを削除',
-        'メモを削除しますか？',
-        function() {
+    runWithConfirm({
+        title: 'メモを削除',
+        message: 'メモを削除しますか？',
+        action: function() {
             localStorage.removeItem('memoWorkspaceContent');
             const textarea = document.getElementById('memoText');
             if (textarea) {
@@ -2411,7 +2907,7 @@ function confirmClearMemo() {
             }
             updateMemoIndicator();
         }
-    );
+    });
 }
 
 function ensureSavedMemoGroup() {
@@ -2456,10 +2952,10 @@ function saveMemoToCard() {
     save();
     render();
 
-    openConfirmModal(
-        'カード化しました。',
-        'カード化しました。\n\nメモをクリアしますか？',
-        function() {
+    runWithConfirm({
+        title: 'カード化しました。',
+        message: 'カード化しました。\n\nメモをクリアしますか？',
+        action: function() {
             localStorage.removeItem('memoWorkspaceContent');
             const textarea = document.getElementById('memoText');
             if (textarea) {
@@ -2467,7 +2963,7 @@ function saveMemoToCard() {
             }
             updateMemoIndicator();
         }
-    );
+    });
 }
 
 function updateMemoIndicator() {
@@ -2569,6 +3065,15 @@ function openTranslateService(service) {
    追加フォーム
 ================================================== */
 
+function closeAddBox() {
+    const box = document.getElementById('addBox');
+    if (!box) return;
+    document.getElementById('newName').value = '';
+    document.getElementById('newText').value = '';
+    document.getElementById('newType').value = 'text';
+    box.style.display = 'none';
+}
+
 function toggleAdd() {
 
     const box =
@@ -2586,15 +3091,17 @@ function toggleAdd() {
 
         box.style.display =
             "block";
-
+        box.classList.remove('closing');
         updateGroupSelects();
+        setTimeout(() => {
+            document.getElementById('newName')?.focus();
+        }, 0);
 
     }
 
     else {
 
-        box.style.display =
-            "none";
+        closeAddBox();
 
     }
 
@@ -2899,15 +3406,15 @@ function deleteItem(id) {
     }
 
 
-    openConfirmModal(
+    runWithConfirm({
 
-        "項目を削除",
+        title: "項目を削除",
 
-        "「" +
-        item.name +
-        "」を削除しますか？",
+        message: "「" +
+            item.name +
+            "」を削除しますか？",
 
-        function() {
+        action: function() {
 
             data.items =
                 data.items.filter(
@@ -2922,7 +3429,7 @@ function deleteItem(id) {
 
         }
 
-    );
+    });
 
 }
 
@@ -3092,13 +3599,15 @@ function importData(event) {
 
 function resetData() {
 
-    openConfirmModal(
+    runWithConfirm({
 
-        "初期状態に戻す",
+        title: "初期状態に戻す",
 
-        "初期状態に戻しますか？\n\n現在のデータはすべて消えます。",
+        message: "初期状態に戻しますか？\n\n現在のデータはすべて消えます。",
 
-        function() {
+        forceConfirm: true,
+
+        action: function() {
 
             data =
                 JSON.parse(
@@ -3124,7 +3633,7 @@ function resetData() {
 
         }
 
-    );
+    });
 
 }
 
@@ -3156,14 +3665,21 @@ function showConfirmMessage(
 
     confirmAction =
         null;
+    confirmChoice = 'cancel';
+    confirmDialogOpen = true;
 
 
-    document
-        .getElementById(
-            "confirmModalBg"
-        )
-        .style.display =
-            "block";
+    const modalBg = document.getElementById("confirmModalBg");
+    modalBg.style.display = "block";
+    modalBg.classList.remove('closing');
+
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+    const okBtn = document.getElementById('confirmOkBtn');
+    if (cancelBtn && okBtn) {
+        cancelBtn.classList.add('confirm-selected');
+        okBtn.classList.remove('confirm-selected');
+        cancelBtn.focus();
+    }
 
 }
 
@@ -3248,6 +3764,45 @@ document
         }
     );
 
+document.getElementById('addBox')?.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeAddBox();
+    }
+});
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const addBox = document.getElementById('addBox');
+        if (addBox && addBox.style.display === 'block') {
+            event.preventDefault();
+            closeAddBox();
+        }
+    }
+});
+
+function handleConfirmKeydown(event) {
+    if (!confirmDialogOpen) {
+        return;
+    }
+    if (event.key === 'ArrowRight' || event.key === 'Tab') {
+        event.preventDefault();
+        chooseConfirmOption('ok');
+    } else if (event.key === 'ArrowLeft' || (event.shiftKey && event.key === 'Tab')) {
+        event.preventDefault();
+        chooseConfirmOption('cancel');
+    } else if (event.key === 'Enter') {
+        event.preventDefault();
+        if (confirmChoice === 'ok') {
+            executeConfirm();
+        } else {
+            closeConfirmModal();
+        }
+    } else if (event.key === 'Escape') {
+        event.preventDefault();
+        closeConfirmModal();
+    }
+}
+document.addEventListener('keydown', handleConfirmKeydown);
+
 document
     .getElementById(
         "translateModalBg"
@@ -3325,7 +3880,14 @@ function openSettings() {
     const modal = document.getElementById("settingsModal");
     modal.style.display="flex";
     modal.classList.remove('closing');
+    syncSettingsControls();
     document.body.style.overflow="hidden";
+    setTimeout(() => {
+        const content = modal.querySelector('.modal-content');
+        if (content) {
+            content.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+    }, 0);
 }
 
 function closeSettings() {
@@ -3391,6 +3953,24 @@ document.addEventListener("dragleave",e=>{
 <div id="settingsModal" class="settings-modal" style="display:none;">
     <div class="modal-content">
         <h2>⚙️ 設定</h2>
+
+        <div class="settings-options">
+            <label class="settings-option">
+                <input id="settingPreviewEnabled" type="checkbox" onchange="setSetting('cardPreviewEnabled', this.checked)">
+                <span>
+                    <span class="settings-label">カード内容プレビュー（マウスオーバー）</span>
+                    <div class="settings-help">ON: 現在と同じ動作。OFF: ホバーしても内容を表示しません。</div>
+                </span>
+            </label>
+
+            <label class="settings-option">
+                <input id="settingDeleteConfirmEnabled" type="checkbox" onchange="setSetting('deleteConfirmEnabled', this.checked)">
+                <span>
+                    <span class="settings-label">削除時に確認ダイアログを表示</span>
+                    <div class="settings-help">ON: 削除操作で確認。OFF: そのまま即実行します。初期化などの重大操作は常に確認されます。</div>
+                </span>
+            </label>
+        </div>
 
         <button onclick="exportData()">💾 バックアップ</button>
         <button onclick="document.getElementById('importFile').click()">📥 復元</button>
