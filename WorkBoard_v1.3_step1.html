@@ -31,19 +31,101 @@ header {
     padding: 8px;
     background: white;
     display: flex;
-    gap: 5px;
+    flex-direction: column;
+    gap: 7px;
     position: sticky;
     top: 0;
     z-index: 20;
     border-bottom: 1px solid #ddd;
 }
 
+.app-header {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: nowrap;
+    min-width: 0;
+}
+
+.header-left,
+.header-center,
+.header-right {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.header-left {
+    flex: 1 1 0;
+}
+
+.header-center {
+    flex: 0 0 auto;
+    justify-content: center;
+}
+
+.header-right {
+    flex: 1 1 0;
+    justify-content: flex-end;
+}
+
+.header-brand {
+    font-size: 18px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.header-actions,
+.header-tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.header-tools {
+    flex-shrink: 0;
+}
+
+.version-pill {
+    padding: 2px 8px;
+    border: 1px solid #d4dbe5;
+    border-radius: 999px;
+    background: #f8fafc;
+    font-size: 12px;
+    color: #475569;
+}
+
 #search {
-    flex: 1;
-    min-width: 100px;
+    flex: 1 1 140px;
+    min-width: 140px;
+    max-width: 100%;
     padding: 6px 8px;
     border: 1px solid #bbb;
     border-radius: 5px;
+}
+
+#browserBtn,
+#themeBtn {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    .toolbar {
+        overflow-x: auto;
+    }
+
+    .toolbar .header-row {
+        min-width: max-content;
+    }
 }
 
 button {
@@ -57,6 +139,18 @@ button {
 
 button:hover {
     background: #eef5ff;
+}
+
+.card-type-icon {
+    color: #64748b;
+    margin-right: 4px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.card-type-icon.folder {
+    color: #b45309;
 }
 
 #list {
@@ -83,6 +177,18 @@ button:hover {
 }
 .group-header:hover {
     background: #dde6f1;
+}
+
+.group.drop-before {
+    border-top: 3px solid #1f6feb;
+}
+
+.group.drop-after {
+    border-bottom: 3px solid #1f6feb;
+}
+
+.group.dragging {
+    opacity: 0.75;
 }
 
 .group-toggle:hover {
@@ -283,6 +389,13 @@ body.dark #addBox select {
     display: block;
 }
 
+.form-hint {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    margin: 4px 0 8px;
+}
+
 #hint {
     font-size: 11px;
     color: #666;
@@ -352,6 +465,25 @@ body.dark #addBox select {
     max-height: calc(100vh - 40px);
     overflow: auto;
     box-sizing: border-box;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.modal-close-btn {
+    padding: 4px 8px;
+    min-width: 28px;
+    line-height: 1;
+    font-size: 16px;
 }
 
 .modal h3 {
@@ -468,6 +600,338 @@ body.dark .memo-indicator {
     height: auto;
 }
 
+.calculator-display-shell {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.calculator-display {
+    background: #f8fafc;
+    border: 1px solid #d4dbe5;
+    border-radius: 8px;
+    padding: 10px 12px;
+    min-height: 72px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.calculator-display-sub {
+    font-size: 13px;
+    color: #64748b;
+    min-height: 16px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.calculator-display-sub-line {
+    line-height: 1.2;
+}
+
+.calculator-display-sub-memo {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.calculator-display-main {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+body.dark .calculator-display {
+    background: #2a2a2a;
+    border-color: #4b5563;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+body.dark .calculator-display-sub {
+    color: #d1d5db;
+}
+
+body.dark .calculator-display-sub-memo {
+    color: #d1d5db;
+}
+
+body.dark .calculator-display-main {
+    color: #ffffff;
+}
+
+.calculator-stock-add-btn,
+.calculator-stock-clear-btn {
+    padding: 6px 8px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.calculator-stock {
+    margin-bottom: 10px;
+    border: 1px solid #d4dbe5;
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 8px 10px;
+    position: relative;
+}
+
+.calculator-stock-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.calculator-stock-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.calculator-stock-list {
+    max-height: 132px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.calculator-stock-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 24px 28px;
+    align-items: center;
+    gap: 4px;
+}
+
+.calculator-stock-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+    color: #111827;
+    cursor: pointer;
+    padding: 1px 3px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 14px;
+    min-width: 0;
+}
+
+.calculator-stock-value {
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.05;
+    text-align: right;
+    flex: 1;
+    min-width: 0;
+}
+
+.calculator-stock-memo-cell {
+    width: 24px;
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 14px;
+}
+
+.calculator-stock-memo-icon {
+    font-size: 11px;
+    line-height: 1;
+    flex-shrink: 0;
+    position: relative;
+    cursor: help;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px 2px;
+}
+
+.calculator-stock-memo-tooltip {
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translate(-4px, -50%);
+    background: #111827;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    line-height: 1.3;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.12s ease, visibility 0.12s ease;
+    z-index: 6;
+}
+
+.calculator-stock-memo-tooltip.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.calculator-stock-item.selected {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.calculator-stock-delete-btn {
+    padding: 2px 5px;
+    font-size: 12px;
+    line-height: 1;
+    width: 28px;
+    min-width: 28px;
+    flex-shrink: 0;
+    border-color: #d4dbe5;
+}
+
+.calculator-stock-delete-btn:hover {
+    background: #fee2e2;
+    border-color: #fda4af;
+    color: #b91c1c;
+}
+
+.calculator-stock-empty {
+    font-size: 12px;
+    color: #64748b;
+    padding: 4px 6px;
+}
+
+body.dark .calculator-stock {
+    background: #2a2a2a;
+    border-color: #4b5563;
+}
+
+body.dark .calculator-stock-title {
+    color: #e5e7eb;
+}
+
+body.dark .calculator-stock-item {
+    color: #f3f4f6;
+}
+
+body.dark .calculator-stock-item.selected {
+    background: #374151;
+    color: #ffffff;
+}
+
+body.dark .calculator-stock-memo-icon {
+    color: #cbd5e1;
+}
+
+body.dark .calculator-stock-memo-tooltip {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+body.dark .calculator-stock-empty {
+    color: #cbd5e1;
+}
+
+.calculator-stock-memo-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.16);
+    z-index: 12000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.calculator-stock-memo-editor {
+    position: relative;
+    z-index: 12001;
+    width: min(92vw, 320px);
+    background: #ffffff;
+    border: 1px solid #d4dbe5;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.calculator-stock-memo-editor-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.calculator-stock-memo-editor-input {
+    width: 100%;
+    min-height: 62px;
+    resize: vertical;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 6px;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.calculator-stock-memo-editor-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.calculator-stock-memo-editor-actions button {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+body.dark .calculator-stock-memo-editor {
+    background: #2d2d2d;
+    border-color: #4b5563;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+body.dark .calculator-stock-memo-editor-title {
+    color: #e5e7eb;
+}
+
+body.dark .calculator-stock-memo-editor-input {
+    background: #374151;
+    color: #ffffff;
+    border-color: #4b5563;
+}
+
+.calculator-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.calculator-btn {
+    padding: 10px 8px;
+    min-height: 40px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.calculator-btn.operator {
+    background: #f1f5f9;
+}
+
+.calculator-btn.equals {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
 body.dark #qrPreviewBox {
     background: #374151;
     border-color: #4b5563;
@@ -559,6 +1023,38 @@ body.dark .tips{
 body.dark #hint{
     color:#cbd5e1;
 }
+
+.group-drag-handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1;
+    cursor: grab;
+    user-select: none;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.group-drag-handle:active {
+    cursor: grabbing;
+}
+
+.toolbar [data-toolbar-item="true"] {
+    cursor: grab;
+}
+
+.toolbar .toolbar-dragging {
+    opacity: 0.8;
+}
+
+.toolbar .toolbar-drop-target {
+    outline: 2px solid #3b82f6;
+    outline-offset: 1px;
+}
 /* ==========================
    設定画面
 ========================== */
@@ -600,6 +1096,17 @@ body.dark .modal-content{
     margin: 12px 0 8px;
 }
 
+.settings-section {
+    margin: 14px 0 10px;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.settings-section h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+}
+
 .settings-option {
     display: flex;
     align-items: flex-start;
@@ -625,6 +1132,22 @@ body.dark .modal-content{
     font-size: 12px;
     line-height: 1.4;
     color: #64748b;
+}
+
+.browser-setting-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.browser-setting-row input {
+    flex: 1;
+    min-width: 0;
+}
+
+.settings-option-block {
+    display: block;
+    padding: 10px 12px;
 }
 
 body.dark .settings-option {
@@ -677,6 +1200,224 @@ body.dark .confirm-selected {
 #contextMenu .menu-item:hover{background:#f0f4f8}
 body.dark #contextMenu{background:#2d2d2d;color:#f5f5f5;border:1px solid #4b5563;box-shadow:0 6px 20px rgba(0,0,0,.6)}
 body.dark #contextMenu .menu-item:hover{background:#374151}
+
+#contextMenu.calendar-context-menu {
+    min-width: auto;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 999px;
+}
+
+#contextMenu.calendar-context-menu .menu-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 999px;
+    font-size: 15px;
+    line-height: 1;
+}
+
+#contextMenu.calendar-context-menu .menu-item.delete:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+body.dark #contextMenu.calendar-context-menu .menu-item {
+    background: #374151;
+}
+
+body.dark #contextMenu.calendar-context-menu .menu-item:hover {
+    background: #4b5563;
+}
+
+body.dark #contextMenu.calendar-context-menu .menu-item.delete:hover {
+    background: #7f1d1d;
+    color: #fecaca;
+}
+
+#calendarMemoModalBg {
+    z-index: 13000;
+}
+
+#calendarMemoModalBg .modal {
+    z-index: 1;
+}
+
+.calendar-screen {
+    position: fixed;
+    inset: 0;
+    background: #f8fafc;
+    color: #111827;
+    display: none;
+    flex-direction: column;
+    z-index: 12000;
+    padding: 16px;
+    overflow: auto;
+}
+
+.calendar-screen.open {
+    display: flex;
+}
+
+.calendar-screen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.calendar-screen-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.calendar-nav button {
+    min-width: 36px;
+}
+
+.calendar-current-month {
+    font-size: 16px;
+    font-weight: 700;
+    min-width: 120px;
+    text-align: center;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.calendar-weekdays {
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.calendar-weekday {
+    text-align: center;
+    padding: 4px 0;
+}
+
+.calendar-day {
+    min-height: 72px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 6px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 3px;
+}
+
+.calendar-day.other-month {
+    background: #f1f5f9;
+    color: #94a3b8;
+}
+
+.calendar-day.today {
+    border: 2px solid #2563eb;
+}
+
+.calendar-day-number {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.calendar-day-holiday {
+    font-size: 10px;
+    color: #dc2626;
+    line-height: 1.2;
+}
+
+.calendar-day-memo {
+    font-size: 10px;
+    line-height: 1.2;
+    color: #111827;
+    word-break: break-word;
+    padding-top: 1px;
+}
+
+.calendar-day-memo.red {
+    color: #dc2626;
+}
+
+.calendar-day.sun .calendar-day-number {
+    color: #dc2626;
+}
+
+.calendar-day.sat .calendar-day-number {
+    color: #2563eb;
+}
+
+.calendar-day-number.holiday,
+.calendar-day.holiday .calendar-day-number {
+    color: #dc2626;
+}
+
+.calendar-memo-color-options {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0 10px;
+    font-size: 13px;
+}
+
+.calendar-memo-color-options label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+body.dark .calendar-screen {
+    background: #1f2937;
+    color: #f9fafb;
+}
+
+body.dark .calendar-day {
+    background: #374151;
+    border-color: #4b5563;
+}
+
+body.dark .calendar-day.other-month {
+    background: #2d3748;
+    color: #94a3b8;
+}
+
+body.dark .calendar-day-holiday {
+    color: #fda4af;
+}
+
+body.dark .calendar-day-memo {
+    color: #f9fafb;
+}
+
+body.dark .calendar-day-memo.red {
+    color: #fda4af;
+}
+
+body.dark .calendar-weekdays {
+    color: #d1d5db;
+}
+
+body.dark .calendar-day.sun { color: #fda4af; }
+body.dark .calendar-day.sat { color: #93c5fd; }
 /* UI animations */
 .group-items{
     overflow: hidden;
@@ -711,63 +1452,106 @@ button:hover{transform:translateY(-1px)}
 
 <body>
 
-<header>
-WorkBoard<br><span style="font-size:12px;font-weight:400;opacity:.85">One Click Work Tool</span>
+<header class="app-header">
+    <div class="header-row">
+        <div class="header-left">
+            <div class="header-brand">WorkBoard</div>
+        </div>
+        <div class="header-center"></div>
+        <div class="header-right">
+            <div class="header-actions">
+                <span class="version-pill">v2.0.0</span>
+                <button id="calendarBtn" type="button" onclick="openCalendarButton()" title="カレンダー">📅</button>
+                <button id="settingsBtn" data-toolbar-item="true" draggable="true" onclick="openSettings()" title="設定">⚙️</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toolbar" class="toolbar">
+        <div class="header-row">
+            <input id="search" placeholder="検索">
+            <div class="header-tools">
+                <button id="browserBtn" type="button" onclick="launchConfiguredBrowserUrls()" title="ブラウザ">🌐</button>
+                <button id="themeBtn" data-toolbar-item="true" draggable="true" title="ダークモード">🌙</button>
+            </div>
+        </div>
+
+        <div class="header-row">
+            <div class="header-actions">
+                <button id="addBtn" data-toolbar-item="true" draggable="true" onclick="toggleAdd()">＋追加</button>
+                <button id="groupBtn" data-toolbar-item="true" draggable="true" onclick="addGroup()">🗂 グループ</button>
+                <button id="translateBtn" data-toolbar-item="true" draggable="true" onclick="openTranslateModal()" title="翻訳">🌍 翻訳</button>
+                <button id="memoBtn" data-toolbar-item="true" draggable="true" onclick="openMemoModal()" title="メモ">📝 メモ</button>
+                <button id="qrBtn" data-toolbar-item="true" draggable="true" onclick="openQrModal()" title="QR">📱 QR</button>
+                <button id="calcBtn" data-toolbar-item="true" draggable="true" type="button" onclick="openLauncherPlaceholder('電卓')">🧮 電卓</button>
+            </div>
+        </div>
+    </div>
+
+    <input
+        type="file"
+        id="importFile"
+        accept=".json"
+        style="display:none"
+        onchange="importData(event)"
+    >
 </header>
 
-<div class="toolbar">
-
-<input
-    id="search"
-    placeholder="検索"
->
-
-<button onclick="toggleAdd()">
-＋追加
-</button>
-
-<button onclick="addGroup()">
-📁グループ
-</button>
-<button onclick="openSettings()"
-title="設定">
-⚙️
-</button>
-
-<button onclick="openTranslateModal()"
-title="翻訳">
-🌍 翻訳
-</button>
-
-<button onclick="openMemoModal()"
-title="メモ">
-📝 メモ
-</button>
-
-<button onclick="openQrModal()"
-title="QR">
-📱 QR
-</button>
-
-<input
-    type="file"
-    id="importFile"
-    accept=".json"
-    style="display:none"
-    onchange="importData(event)"
->
-<button id="themeBtn" title="ダークモード">
-🌙
-</button>
-
+<div id="calendarScreen" class="calendar-screen" style="display:none;">
+    <div class="calendar-screen-header">
+        <div class="calendar-screen-title">カレンダー</div>
+        <button type="button" onclick="closeCalendarView()" title="閉じる">閉じる</button>
+    </div>
+    <div class="calendar-nav">
+        <button type="button" onclick="changeCalendarMonth(-1)">＜</button>
+        <div id="calendarCurrentMonth" class="calendar-current-month"></div>
+        <button type="button" onclick="changeCalendarMonth(1)">＞</button>
+    </div>
+    <div class="calendar-weekdays">
+        <div class="calendar-weekday">日</div>
+        <div class="calendar-weekday">月</div>
+        <div class="calendar-weekday">火</div>
+        <div class="calendar-weekday">水</div>
+        <div class="calendar-weekday">木</div>
+        <div class="calendar-weekday">金</div>
+        <div class="calendar-weekday">土</div>
+    </div>
+    <div id="calendarGrid" class="calendar-grid"></div>
 </div>
 
+<div id="calendarMemoModalBg" class="modal-bg" style="display:none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="calendarMemoModalTitle">簡易メモ</h3>
+            <button type="button" class="modal-close-btn" onclick="closeCalendarMemoModal()" aria-label="閉じる" title="閉じる">×</button>
+        </div>
+
+        <label class="form-label" for="calendarMemoInput">メモ</label>
+        <textarea id="calendarMemoInput" maxlength="15" placeholder="15文字以内" oninput="limitCalendarMemoInput()"></textarea>
+
+        <div class="form-hint">15文字以内</div>
+
+        <div class="calendar-memo-color-options">
+            <label><input type="radio" name="calendarMemoColor" value="normal" checked> 通常</label>
+            <label><input type="radio" name="calendarMemoColor" value="red"> 赤</label>
+        </div>
+
+        <div class="modal-buttons">
+            <button type="button" id="calendarMemoDeleteBtn" onclick="deleteCalendarMemo()" style="display:none;">削除</button>
+            <button type="button" onclick="closeCalendarMemoModal()">キャンセル</button>
+            <button type="button" onclick="saveCalendarMemo()">OK</button>
+        </div>
+    </div>
+</div>
 
 <div id="addBox" class="modal-bg" style="display:none;">
 
 <div class="add-modal-panel">
 
-<h3>カードを追加</h3>
+<div class="modal-header">
+    <h3>カードを追加</h3>
+    <button type="button" class="modal-close-btn" onclick="closeAddBox()" aria-label="閉じる" title="閉じる">×</button>
+</div>
 
 <label class="form-label">
 タイトル
@@ -782,7 +1566,7 @@ title="QR">
 種類
 </label>
 
-<select id="newType">
+<select id="newType" onchange="syncCardTypeInputs('new')">
 
 <option value="text">
 Text
@@ -792,9 +1576,13 @@ Text
 URL
 </option>
 
+<option value="folder">
+Folder
+</option>
+
 </select>
 
-<label class="form-label">
+<label id="newContentLabel" class="form-label">
 内容
 </label>
 
@@ -802,6 +1590,21 @@ URL
     id="newText"
     placeholder="コピーする内容、またはURL"
 ></textarea>
+
+<input
+    id="newFolderPath"
+    type="text"
+    placeholder="C:\Users\xxxxx"
+    style="display:none;"
+>
+
+<div
+    id="newFolderHint"
+    class="form-hint"
+    style="display:none;"
+>
+※ フォルダを開く機能（OPEN）はEXE版専用です。<br>HTML版では保存・編集のみ利用できます。
+</div>
 
 <label class="form-label">
 グループ
@@ -812,16 +1615,10 @@ URL
 
 <div class="modal-buttons">
 <button onclick="addItem()">登録</button>
-<button onclick="closeAddBox()">閉じる</button>
 </div>
 
 </div>
 
-</div>
-
-
-<div id="hint">
-↕️ ドラッグで順番変更 ／ グループもドラッグで順番変更 ／ Textはマウスオーバーで内容表示 ／ URLは🔗 Openで開く ／ 📋 Copy・🔗 Open・✏️編集・🗑️削除
 </div>
 
 
@@ -842,16 +1639,19 @@ URL
 
 <div class="modal">
 
-<h3>
-項目を編集
-</h3>
+<div class="modal-header">
+    <h3>
+    項目を編集
+    </h3>
+    <button type="button" class="modal-close-btn" onclick="closeEdit()" aria-label="閉じる" title="閉じる">×</button>
+</div>
 
 <input
     id="editName"
     placeholder="タイトル"
 >
 
-<select id="editType">
+<select id="editType" onchange="syncCardTypeInputs('edit')">
 
 <option value="text">
 Text
@@ -861,12 +1661,35 @@ Text
 URL
 </option>
 
+<option value="folder">
+Folder
+</option>
+
 </select>
+
+<label id="editContentLabel" class="form-label">
+内容
+</label>
 
 <textarea
     id="editText"
     placeholder="内容"
 ></textarea>
+
+<input
+    id="editFolderPath"
+    type="text"
+    placeholder="C:\Users\xxxxx"
+    style="display:none;"
+>
+
+<div
+    id="editFolderHint"
+    class="form-hint"
+    style="display:none;"
+>
+※ フォルダを開く機能（OPEN）はEXE版専用です。<br>HTML版では保存・編集のみ利用できます。
+</div>
 
 <select id="editGroup">
 </select>
@@ -897,9 +1720,12 @@ URL
 
 <div class="modal">
 
-<h3 id="groupModalTitle">
-新しいグループを作成
-</h3>
+<div class="modal-header">
+    <h3 id="groupModalTitle">
+    新しいグループを作成
+    </h3>
+    <button type="button" class="modal-close-btn" onclick="closeGroupModal()" aria-label="閉じる" title="閉じる">×</button>
+</div>
 
 <input
     id="groupNameInput"
@@ -932,9 +1758,12 @@ URL
 
 <div class="modal">
 
-<h3 id="confirmModalTitle">
-確認
-</h3>
+<div class="modal-header">
+    <h3 id="confirmModalTitle">
+    確認
+    </h3>
+    <button type="button" class="modal-close-btn" onclick="closeConfirmModal()" aria-label="閉じる" title="閉じる">×</button>
+</div>
 
 <div
     id="confirmModalMessage"
@@ -959,15 +1788,108 @@ URL
 
 
 <div
+    id="calculatorModalBg"
+    class="modal-bg"
+>
+
+<div class="modal">
+
+<div class="modal-header">
+    <h3>
+    🧮 電卓
+    </h3>
+    <button type="button" class="modal-close-btn" onclick="closeCalculatorModal()" aria-label="閉じる" title="閉じる">×</button>
+</div>
+
+<input
+    id="calculatorFocusInput"
+    type="text"
+    inputmode="decimal"
+    style="position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;"
+>
+
+<div class="calculator-display-shell">
+    <div id="calculatorDisplay" class="calculator-display">
+        <div id="calculatorDisplaySub" class="calculator-display-sub"></div>
+        <div id="calculatorDisplayMain" class="calculator-display-main">0</div>
+    </div>
+    <button type="button" class="calculator-stock-add-btn" onclick="addCalculatorStockFromDisplay()">📌 Stockへ追加</button>
+</div>
+
+<div class="calculator-stock">
+    <div class="calculator-stock-header">
+        <div id="calculatorStockTitle" class="calculator-stock-title">Stock (0)</div>
+        <button type="button" id="calculatorStockMemoEditBtn" class="calculator-stock-clear-btn" onclick="handleCalculatorStockMemoButtonClick(event)" style="display:none;">📝 メモ</button>
+        <button type="button" class="calculator-stock-clear-btn" onclick="confirmClearCalculatorStock()">全削除</button>
+    </div>
+    <div id="calculatorStockList" class="calculator-stock-list"></div>
+</div>
+
+<div class="calculator-grid">
+    <button type="button" class="calculator-btn operator" onclick="clearCalculatorEntry()">CE</button>
+    <button type="button" class="calculator-btn operator" onclick="clearCalculatorAll()">C</button>
+    <button type="button" class="calculator-btn operator" onclick="applyCalculatorPercent()">%</button>
+    <button type="button" class="calculator-btn operator" onclick="backspaceCalculator()">⌫</button>
+    <button type="button" class="calculator-btn operator" onclick="chooseCalculatorOperator('/')">÷</button>
+
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('7')">7</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('8')">8</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('9')">9</button>
+    <button type="button" class="calculator-btn operator" onclick="chooseCalculatorOperator('*')">×</button>
+    <button type="button" class="calculator-btn operator" onclick="toggleCalculatorSign()">±</button>
+
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('4')">4</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('5')">5</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('6')">6</button>
+    <button type="button" class="calculator-btn operator" onclick="chooseCalculatorOperator('-')">−</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('0')">0</button>
+
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('1')">1</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('2')">2</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDigit('3')">3</button>
+    <button type="button" class="calculator-btn operator" onclick="chooseCalculatorOperator('+')">+</button>
+    <button type="button" class="calculator-btn" onclick="pressCalculatorDecimal()">.</button>
+    <button type="button" class="calculator-btn operator" onclick="applyCalculatorTaxIncluded()" oncontextmenu="handleCalculatorTaxButtonContextMenu(event, 'included'); return false;" style="grid-column: span 2;">税込</button>
+    <button type="button" class="calculator-btn operator" onclick="applyCalculatorTaxExcluded()" oncontextmenu="handleCalculatorTaxButtonContextMenu(event, 'excluded'); return false;" style="grid-column: span 2;">税抜</button>
+
+    <button type="button" class="calculator-btn equals" onclick="calculateCalculatorResult()" style="grid-column: span 5;">=</button>
+</div>
+
+</div>
+
+</div>
+
+<div id="calculatorTaxRateModalBg" class="modal-bg" style="display:none;">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>消費税率設定</h3>
+            <button type="button" class="modal-close-btn" onclick="closeCalculatorTaxRateModal()" aria-label="閉じる" title="閉じる">×</button>
+        </div>
+        <label class="form-label">消費税率</label>
+        <div class="calculator-tax-rate-input-row">
+            <input id="calculatorTaxRateInput" type="number" min="0" max="100" step="0.1" inputmode="decimal" value="10">
+            <span>%</span>
+        </div>
+        <div class="modal-buttons">
+            <button type="button" onclick="closeCalculatorTaxRateModal()">キャンセル</button>
+            <button type="button" onclick="saveCalculatorTaxRate()">OK</button>
+        </div>
+    </div>
+</div>
+
+<div
     id="translateModalBg"
     class="modal-bg"
 >
 
 <div class="modal">
 
-<h3>
-🌍 翻訳 Workspace
-</h3>
+<div class="modal-header">
+    <h3>
+    🌍 翻訳 Workspace
+    </h3>
+    <button type="button" class="modal-close-btn" onclick="closeTranslateModal()" aria-label="閉じる" title="閉じる">×</button>
+</div>
 
 <textarea
     id="translateText"
@@ -987,9 +1909,6 @@ URL
     <button type="button" onclick="openTranslateService('deepl')">💎 DeepL</button>
 </div>
 
-<div class="modal-buttons">
-    <button type="button" onclick="closeTranslateModal()">閉じる</button>
-</div>
 
 </div>
 
@@ -1006,9 +1925,12 @@ URL
 
 <div class="modal">
 
-<h3>
-📝 メモ Workspace
-</h3>
+<div class="modal-header">
+    <h3>
+    📝 メモ Workspace
+    </h3>
+    <button type="button" class="modal-close-btn" onclick="closeMemoModal()" aria-label="閉じる" title="閉じる">×</button>
+</div>
 
 <textarea
     id="memoText"
@@ -1021,9 +1943,6 @@ URL
     <button type="button" onclick="saveMemoToCard()">📦 カード化</button>
 </div>
 
-<div class="modal-buttons">
-    <button type="button" onclick="closeMemoModal()">閉じる</button>
-</div>
 
 </div>
 
@@ -1036,9 +1955,12 @@ URL
 
 <div class="modal">
 
-<h3>
-📱 QR Workspace
-</h3>
+<div class="modal-header">
+    <h3>
+    📱 QR Workspace
+    </h3>
+    <button type="button" class="modal-close-btn" onclick="closeQrModal()" aria-label="閉じる" title="閉じる">×</button>
+</div>
 
 <div id="qrInputArea">
     <input
@@ -1068,9 +1990,6 @@ URL
     <button type="button" id="qrCopyBtn" onclick="copyQrImage()" disabled>📋 QR画像コピー</button>
 </div>
 
-<div class="modal-buttons">
-    <button type="button" onclick="closeQrModal()">閉じる</button>
-</div>
 
 </div>
 
@@ -1255,6 +2174,7 @@ let editingGroupId = null;
 let confirmAction = null;
 let confirmChoice = 'cancel';
 let confirmDialogOpen = false;
+let confirmModalMode = 'confirm';
 
 // removed color-selection state (feature rolled back)
 
@@ -1272,9 +2192,15 @@ function save() {
 
 }
 
+const defaultToolbarOrder = ["addBtn", "groupBtn", "translateBtn", "memoBtn", "qrBtn", "calcBtn", "settingsBtn", "themeBtn"];
+
 const defaultSettings = {
     cardPreviewEnabled: true,
-    deleteConfirmEnabled: true
+    deleteConfirmEnabled: true,
+    toolbarOrder: [...defaultToolbarOrder],
+    browserLaunchUrls: [],
+    browserLaunchMode: 'default',
+    taxRatePercent: 10
 };
 
 let settings = loadSettings();
@@ -1317,6 +2243,110 @@ function setSetting(key, value) {
     }
 }
 
+function getToolbarOrder() {
+    const savedOrder = Array.isArray(settings.toolbarOrder) ? settings.toolbarOrder : [];
+    const available = savedOrder.filter(id => document.getElementById(id));
+    const missing = defaultToolbarOrder.filter(id => !available.includes(id));
+    return [...available, ...missing];
+}
+
+function saveToolbarOrder(order) {
+    settings.toolbarOrder = order;
+    saveSettings();
+}
+
+function applyToolbarOrder() {
+    const header = document.querySelector(".app-header");
+    if (!header) {
+        return;
+    }
+
+    const order = getToolbarOrder();
+    const containers = Array.from(header.querySelectorAll(".header-row .header-actions, .header-row .header-tools"));
+
+    containers.forEach(container => {
+        const children = Array.from(container.children);
+        const reorderableChildren = children.filter(child => child.id && order.includes(child.id));
+        const staticChildren = children.filter(child => !(child.id && order.includes(child.id)));
+
+        reorderableChildren.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+
+        container.innerHTML = "";
+        staticChildren.forEach(child => container.appendChild(child));
+        reorderableChildren.forEach(child => container.appendChild(child));
+    });
+}
+
+function bindToolbarReordering() {
+    const header = document.querySelector(".app-header");
+    if (!header) {
+        return;
+    }
+
+    header.querySelectorAll("[data-toolbar-item='true']").forEach(button => {
+        button.addEventListener("dragstart", function(event) {
+            if (!event.shiftKey) {
+                event.preventDefault();
+                return;
+            }
+
+            event.dataTransfer?.setData("text/plain", button.id);
+            event.dataTransfer.effectAllowed = "move";
+            button.classList.add("toolbar-dragging");
+        });
+
+        button.addEventListener("dragend", function() {
+            button.classList.remove("toolbar-dragging");
+            header.querySelectorAll(".toolbar-drop-target").forEach(item => item.classList.remove("toolbar-drop-target"));
+        });
+
+        button.addEventListener("dragover", function(event) {
+            if (!event.shiftKey) {
+                return;
+            }
+
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+            header.querySelectorAll(".toolbar-drop-target").forEach(item => item.classList.remove("toolbar-drop-target"));
+            button.classList.add("toolbar-drop-target");
+        });
+
+        button.addEventListener("dragleave", function() {
+            button.classList.remove("toolbar-drop-target");
+        });
+
+        button.addEventListener("drop", function(event) {
+            if (!event.shiftKey) {
+                event.preventDefault();
+                return;
+            }
+
+            event.preventDefault();
+            const draggedId = event.dataTransfer?.getData("text/plain");
+            if (!draggedId || draggedId === button.id) {
+                return;
+            }
+
+            const currentOrder = getToolbarOrder();
+            const fromIndex = currentOrder.indexOf(draggedId);
+            const toIndex = currentOrder.indexOf(button.id);
+
+            if (fromIndex < 0 || toIndex < 0) {
+                return;
+            }
+
+            const nextOrder = [...currentOrder];
+            const [moved] = nextOrder.splice(fromIndex, 1);
+            nextOrder.splice(toIndex, 0, moved);
+
+            saveToolbarOrder(nextOrder);
+            applyToolbarOrder();
+        });
+    });
+
+    applyToolbarOrder();
+}
+
 function syncSettingsControls() {
     const previewCheckbox = document.getElementById("settingPreviewEnabled");
     if (previewCheckbox) {
@@ -1327,6 +2357,1907 @@ function syncSettingsControls() {
     if (deleteCheckbox) {
         deleteCheckbox.checked = getSetting("deleteConfirmEnabled");
     }
+
+    const browserModeSelect = document.getElementById("settingBrowserLaunchMode");
+    if (browserModeSelect) {
+        browserModeSelect.value = getSetting("browserLaunchMode") || "default";
+    }
+
+    const taxRateInput = document.getElementById("settingTaxRatePercent");
+    if (taxRateInput) {
+        taxRateInput.value = getSetting("taxRatePercent") ?? 10;
+    }
+
+    renderBrowserSettings();
+}
+
+function addBrowserUrlSetting() {
+    const urls = Array.isArray(getSetting("browserLaunchUrls")) ? [...getSetting("browserLaunchUrls")] : [];
+    urls.push("");
+    settings.browserLaunchUrls = urls;
+    saveSettings();
+    renderBrowserSettings();
+}
+
+function removeBrowserUrlSetting(index) {
+    const urls = Array.isArray(getSetting("browserLaunchUrls")) ? [...getSetting("browserLaunchUrls")] : [];
+    urls.splice(index, 1);
+    settings.browserLaunchUrls = urls;
+    saveSettings();
+    renderBrowserSettings();
+}
+
+function updateBrowserUrlSetting(index, value) {
+    const urls = Array.isArray(getSetting("browserLaunchUrls")) ? [...getSetting("browserLaunchUrls")] : [];
+    urls[index] = value;
+    settings.browserLaunchUrls = urls;
+    saveSettings();
+}
+
+function renderBrowserSettings() {
+    const container = document.getElementById("browserSettingsList");
+    if (!container) {
+        return;
+    }
+
+    const urls = Array.isArray(getSetting("browserLaunchUrls")) ? getSetting("browserLaunchUrls") : [];
+    container.innerHTML = "";
+
+    if (urls.length === 0) {
+        urls.push("");
+    }
+
+    urls.forEach((url, index) => {
+        const row = document.createElement("div");
+        row.className = "browser-setting-row";
+
+        const input = document.createElement("input");
+        input.type = "url";
+        input.inputMode = "url";
+        input.placeholder = "https://example.com";
+        input.value = url;
+        input.addEventListener("input", function() {
+            updateBrowserUrlSetting(index, input.value);
+        });
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "－削除";
+        removeButton.onclick = function() {
+            removeBrowserUrlSetting(index);
+        };
+
+        row.appendChild(input);
+        row.appendChild(removeButton);
+        container.appendChild(row);
+    });
+}
+
+function launchConfiguredBrowserUrls() {
+    const urls = Array.isArray(getSetting("browserLaunchUrls"))
+        ? getSetting("browserLaunchUrls").map(value => String(value).trim()).filter(Boolean)
+        : [];
+
+    if (urls.length === 0) {
+        showConfirmMessage("ブラウザ", "登録されたURLがありません。設定画面で追加してください。");
+        return;
+    }
+
+    urls.forEach((url, index) => {
+        setTimeout(() => {
+            window.open(url, "_blank", "noopener,noreferrer");
+        }, index * 250);
+    });
+}
+
+function openLauncherPlaceholder(name) {
+    if (name === "電卓") {
+        openCalculatorModal();
+        return;
+    }
+    showConfirmMessage("ランチャー", name + "は今後追加予定です。");
+}
+
+let calculatorState = {
+    display: '0',
+    firstValue: null,
+    operator: null,
+    waitingForSecond: false,
+    justEvaluated: false,
+    expression: '',
+    displayMemo: '',
+    taxSummary: null
+};
+
+let calculatorStock = [];
+let calculatorSelectedStockIndex = -1;
+let calculatorStockMemoEditorIndex = -1;
+
+let calendarViewState = {
+    year: new Date().getFullYear(),
+    month: new Date().getMonth()
+};
+
+let calendarMemoStorage = loadCalendarMemoStorage();
+let calendarMemoModalState = {
+    dateKey: null,
+    memo: null
+};
+
+function formatCalculatorNumber(value) {
+    if (!Number.isFinite(value)) {
+        return 'Error';
+    }
+    const rounded = Number(value.toFixed(10));
+    return String(rounded);
+}
+
+function getCalculatorExpressionText() {
+    if (calculatorState.operator && calculatorState.firstValue !== null) {
+        const firstValueText = formatCalculatorNumber(calculatorState.firstValue);
+        if (calculatorState.waitingForSecond) {
+            return `${firstValueText} ${calculatorState.operator}`;
+        }
+        return `${firstValueText} ${calculatorState.operator} ${calculatorState.display}`;
+    }
+    return calculatorState.expression || '';
+}
+
+function getCalculatorTaxRate() {
+    const value = Number(getSetting('taxRatePercent'));
+    if (!Number.isFinite(value) || value < 0) {
+        return 10;
+    }
+    return value;
+}
+
+function buildCalculatorTaxSummary(value, mode) {
+    const numericValue = Number(value);
+    const rate = getCalculatorTaxRate() / 100;
+    if (mode === 'included') {
+        const excluded = numericValue;
+        const included = excluded * (1 + rate);
+        const taxAmount = included - excluded;
+        return {
+            excluded,
+            included,
+            taxAmount
+        };
+    }
+
+    const included = numericValue;
+    const excluded = included / (1 + rate);
+    const taxAmount = included - excluded;
+    return {
+        excluded,
+        included,
+        taxAmount
+    };
+}
+
+function renderCalculatorDisplaySub() {
+    const displaySub = document.getElementById('calculatorDisplaySub');
+    if (!displaySub) {
+        return;
+    }
+
+    const lines = [];
+    if (calculatorState.taxSummary) {
+        const summary = calculatorState.taxSummary;
+        lines.push(`<div class="calculator-display-sub-line calculator-display-sub-tax">税抜 ${formatCalculatorNumber(summary.excluded)}</div>`);
+        lines.push(`<div class="calculator-display-sub-line calculator-display-sub-tax">税込 ${formatCalculatorNumber(summary.included)}</div>`);
+        lines.push(`<div class="calculator-display-sub-line calculator-display-sub-tax">消費税 ${formatCalculatorNumber(summary.taxAmount)}</div>`);
+    } else {
+        if (calculatorState.displayMemo) {
+            lines.push(`<div class="calculator-display-sub-line calculator-display-sub-memo">${calculatorState.displayMemo}</div>`);
+        }
+
+        const expressionText = getCalculatorExpressionText();
+        if (calculatorState.displayMemo) {
+            lines.push(`<div class="calculator-display-sub-line">${expressionText || calculatorState.display || '0'}</div>`);
+        } else if (expressionText) {
+            lines.push(`<div class="calculator-display-sub-line">${expressionText}</div>`);
+        }
+    }
+
+    displaySub.innerHTML = lines.join('');
+}
+
+function updateCalculatorDisplay() {
+    const displayMain = document.getElementById('calculatorDisplayMain');
+    if (displayMain) {
+        displayMain.textContent = calculatorState.display || '0';
+    }
+    renderCalculatorDisplaySub();
+    renderCalculatorStock();
+}
+
+function normalizeCalculatorStockItem(item) {
+    if (typeof item === 'string') {
+        return { value: item, memo: '' };
+    }
+
+    if (item && typeof item === 'object') {
+        return {
+            value: String(item.value ?? ''),
+            memo: String(item.memo ?? '')
+        };
+    }
+
+    return { value: '', memo: '' };
+}
+
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function closeCalculatorStockMemoEditor() {
+    const overlay = document.getElementById('calculatorStockMemoOverlay');
+    if (overlay) {
+        overlay.remove();
+    }
+    calculatorStockMemoEditorIndex = -1;
+}
+
+function handleCalculatorStockMemoButtonClick(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    if (calculatorStock.length === 0) {
+        return;
+    }
+
+    openSelectedCalculatorStockMemoEditor();
+}
+
+function openSelectedCalculatorStockMemoEditor() {
+    const targetIndex = calculatorSelectedStockIndex >= 0 ? calculatorSelectedStockIndex : calculatorStock.length - 1;
+    if (targetIndex < 0 || targetIndex >= calculatorStock.length) {
+        return;
+    }
+    openCalculatorStockMemoEditor(targetIndex);
+}
+
+function saveCalculatorStockMemo(index, memoValue) {
+    if (index < 0 || index >= calculatorStock.length) {
+        closeCalculatorStockMemoEditor();
+        return;
+    }
+
+    const stockItem = normalizeCalculatorStockItem(calculatorStock[index]);
+    calculatorStock[index] = {
+        value: stockItem.value,
+        memo: String(memoValue ?? '')
+    };
+    closeCalculatorStockMemoEditor();
+    renderCalculatorStock();
+}
+
+function openCalculatorStockMemoEditor(index) {
+    if (index < 0 || index >= calculatorStock.length) {
+        return;
+    }
+
+    const stockItem = normalizeCalculatorStockItem(calculatorStock[index]);
+    closeCalculatorStockMemoEditor();
+    calculatorStockMemoEditorIndex = index;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'calculatorStockMemoOverlay';
+    overlay.className = 'calculator-stock-memo-overlay';
+
+    const editor = document.createElement('div');
+    editor.id = 'calculatorStockMemoEditor';
+    editor.className = 'calculator-stock-memo-editor';
+
+    const title = document.createElement('div');
+    title.className = 'calculator-stock-memo-editor-title';
+    title.textContent = 'メモ編集';
+
+    const textarea = document.createElement('textarea');
+    textarea.className = 'calculator-stock-memo-editor-input';
+    textarea.value = stockItem.memo;
+    textarea.placeholder = 'メモを入力してください';
+
+    const actions = document.createElement('div');
+    actions.className = 'calculator-stock-memo-editor-actions';
+
+    const cancelButton = document.createElement('button');
+    cancelButton.type = 'button';
+    cancelButton.className = 'calculator-stock-memo-editor-cancel';
+    cancelButton.textContent = 'キャンセル';
+    cancelButton.addEventListener('click', () => {
+        closeCalculatorStockMemoEditor();
+    });
+
+    const saveButton = document.createElement('button');
+    saveButton.type = 'button';
+    saveButton.className = 'calculator-stock-memo-editor-save';
+    saveButton.textContent = '保存';
+    saveButton.addEventListener('click', () => {
+        saveCalculatorStockMemo(index, textarea.value);
+    });
+
+    actions.appendChild(cancelButton);
+    actions.appendChild(saveButton);
+    editor.appendChild(title);
+    editor.appendChild(textarea);
+    editor.appendChild(actions);
+
+    overlay.appendChild(editor);
+    document.body.appendChild(overlay);
+
+    editor.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    overlay.addEventListener('click', () => {
+        closeCalculatorStockMemoEditor();
+    });
+
+    textarea.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            saveCalculatorStockMemo(index, textarea.value);
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closeCalculatorStockMemoEditor();
+        }
+    });
+
+    textarea.focus();
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+}
+
+function renderCalculatorStock() {
+    const title = document.getElementById('calculatorStockTitle');
+    const list = document.getElementById('calculatorStockList');
+    if (!title || !list) {
+        return;
+    }
+
+    title.textContent = `Stock (${calculatorStock.length})`;
+
+    const memoEditButton = document.getElementById('calculatorStockMemoEditBtn');
+    if (memoEditButton) {
+        memoEditButton.style.display = calculatorStock.length > 0 ? 'inline-flex' : 'none';
+    }
+
+    if (calculatorStock.length === 0) {
+        list.innerHTML = '<div class="calculator-stock-empty">まだありません</div>';
+        return;
+    }
+
+    list.innerHTML = calculatorStock.map((item, index) => {
+        const stockItem = normalizeCalculatorStockItem(item);
+        const selectedClass = index === calculatorSelectedStockIndex ? ' selected' : '';
+        const memoIconHtml = stockItem.memo
+            ? `<span class="calculator-stock-memo-icon" data-index="${index}" tabindex="0" aria-label="メモあり">📝</span>`
+            : '';
+        return `
+            <div class="calculator-stock-row">
+                <div class="calculator-stock-item${selectedClass}" data-index="${index}">
+                    <div class="calculator-stock-value">${escapeHtml(stockItem.value)}</div>
+                </div>
+                <div class="calculator-stock-memo-cell">
+                    ${memoIconHtml}
+                </div>
+                <button type="button" class="calculator-stock-delete-btn" data-index="${index}" aria-label="削除">🗑</button>
+            </div>
+        `;
+    }).join('');
+
+    list.querySelectorAll('.calculator-stock-item').forEach((item) => {
+        item.addEventListener('click', () => {
+            selectCalculatorStock(Number(item.dataset.index));
+        });
+        item.addEventListener('dblclick', () => {
+            useCalculatorStockItem(Number(item.dataset.index));
+        });
+    });
+
+    list.querySelectorAll('.calculator-stock-delete-btn').forEach((button) => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const index = Number(button.dataset.index);
+            removeCalculatorStock(index);
+        });
+    });
+
+    list.querySelectorAll('.calculator-stock-memo-icon').forEach((icon) => {
+        const memoText = icon.textContent || '';
+        const tooltip = document.createElement('div');
+        tooltip.className = 'calculator-stock-memo-tooltip';
+        tooltip.textContent = calculatorStock[Number(icon.dataset.index)]?.memo || '';
+        icon.appendChild(tooltip);
+
+        icon.addEventListener('mouseenter', () => {
+            tooltip.classList.add('show');
+        });
+        icon.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('show');
+        });
+        icon.addEventListener('focus', () => {
+            tooltip.classList.add('show');
+        });
+        icon.addEventListener('blur', () => {
+            tooltip.classList.remove('show');
+        });
+    });
+
+}
+
+function selectCalculatorStock(index) {
+    if (index < 0 || index >= calculatorStock.length) {
+        calculatorSelectedStockIndex = -1;
+        renderCalculatorStock();
+        return;
+    }
+
+    calculatorSelectedStockIndex = index;
+    renderCalculatorStock();
+}
+
+function addCalculatorStockFromDisplay() {
+    const value = calculatorState.display || '0';
+    const summary = calculatorState.taxSummary ? `税抜${formatCalculatorNumber(calculatorState.taxSummary.excluded)} / 税込${formatCalculatorNumber(calculatorState.taxSummary.included)} / 消費税${formatCalculatorNumber(calculatorState.taxSummary.taxAmount)}` : '';
+    calculatorStock.push({ value, memo: summary });
+    calculatorSelectedStockIndex = calculatorStock.length - 1;
+    renderCalculatorStock();
+}
+
+function useCalculatorStockItem(index) {
+    if (index < 0 || index >= calculatorStock.length) {
+        return;
+    }
+
+    const stockItem = normalizeCalculatorStockItem(calculatorStock[index]);
+    calculatorStock.splice(index, 1);
+
+    if (calculatorState.operator && calculatorState.firstValue !== null && calculatorState.waitingForSecond) {
+        calculatorState.display = stockItem.value;
+        calculatorState.waitingForSecond = false;
+        calculatorState.justEvaluated = false;
+        calculatorState.expression = `${formatCalculatorNumber(calculatorState.firstValue)} ${calculatorState.operator} ${stockItem.value}`;
+        calculatorState.displayMemo = stockItem.memo || '';
+    } else {
+        calculatorState.display = stockItem.value;
+        calculatorState.firstValue = null;
+        calculatorState.operator = null;
+        calculatorState.waitingForSecond = false;
+        calculatorState.justEvaluated = false;
+        calculatorState.expression = '';
+        calculatorState.displayMemo = stockItem.memo || '';
+    }
+    calculatorState.taxSummary = null;
+
+    calculatorSelectedStockIndex = index >= calculatorStock.length ? calculatorStock.length - 1 : index;
+    updateCalculatorDisplay();
+}
+
+function removeCalculatorStock(index) {
+    if (index < 0 || index >= calculatorStock.length) {
+        return;
+    }
+
+    calculatorStock.splice(index, 1);
+    if (calculatorSelectedStockIndex >= index) {
+        calculatorSelectedStockIndex = Math.max(-1, calculatorSelectedStockIndex - 1);
+    }
+    renderCalculatorStock();
+}
+
+function clearCalculatorStock() {
+    calculatorStock = [];
+    calculatorSelectedStockIndex = -1;
+    renderCalculatorStock();
+}
+
+function confirmClearCalculatorStock() {
+    if (calculatorStock.length === 0) {
+        return;
+    }
+
+    if (window.confirm('Stockを全削除しますか？')) {
+        clearCalculatorStock();
+    }
+}
+
+function resetCalculatorState() {
+    calculatorState = {
+        display: '0',
+        firstValue: null,
+        operator: null,
+        waitingForSecond: false,
+        justEvaluated: false,
+        expression: '',
+        displayMemo: '',
+        taxSummary: null
+    };
+    updateCalculatorDisplay();
+}
+
+function clearCalculatorAll() {
+    resetCalculatorState();
+}
+
+function clearCalculatorEntry() {
+    calculatorState.display = '0';
+    calculatorState.waitingForSecond = false;
+    calculatorState.justEvaluated = false;
+    calculatorState.taxSummary = null;
+    if (calculatorState.operator && calculatorState.firstValue !== null) {
+        calculatorState.expression = `${formatCalculatorNumber(calculatorState.firstValue)} ${calculatorState.operator}`;
+    } else {
+        calculatorState.expression = '';
+    }
+    updateCalculatorDisplay();
+}
+
+function backspaceCalculator() {
+    calculatorState.taxSummary = null;
+
+    if (calculatorState.display === 'Error') {
+        calculatorState.display = '0';
+        calculatorState.expression = '';
+        updateCalculatorDisplay();
+        return;
+    }
+
+    if (calculatorState.justEvaluated) {
+        calculatorState.display = '0';
+        calculatorState.expression = '';
+        calculatorState.justEvaluated = false;
+        updateCalculatorDisplay();
+        return;
+    }
+
+    if (calculatorState.waitingForSecond) {
+        calculatorState.display = '0';
+        calculatorState.waitingForSecond = false;
+        updateCalculatorDisplay();
+        return;
+    }
+
+    const current = calculatorState.display;
+    let nextDisplay = current.slice(0, -1);
+    if (!nextDisplay || nextDisplay === '-') {
+        nextDisplay = '0';
+    }
+    calculatorState.display = nextDisplay;
+    if (calculatorState.operator && calculatorState.firstValue !== null) {
+        calculatorState.expression = `${formatCalculatorNumber(calculatorState.firstValue)} ${calculatorState.operator} ${calculatorState.display}`;
+    } else {
+        calculatorState.expression = '';
+    }
+    updateCalculatorDisplay();
+}
+
+function pressCalculatorDigit(digit) {
+    calculatorState.taxSummary = null;
+
+    if (calculatorState.justEvaluated) {
+        calculatorState.display = '0';
+        calculatorState.justEvaluated = false;
+        calculatorState.firstValue = null;
+        calculatorState.operator = null;
+        calculatorState.expression = '';
+    }
+
+    if (calculatorState.waitingForSecond) {
+        calculatorState.display = digit;
+        calculatorState.waitingForSecond = false;
+    } else {
+        calculatorState.display = calculatorState.display === '0' ? digit : calculatorState.display + digit;
+    }
+
+    if (calculatorState.operator && calculatorState.firstValue !== null) {
+        calculatorState.expression = `${formatCalculatorNumber(calculatorState.firstValue)} ${calculatorState.operator}`;
+        if (!calculatorState.waitingForSecond) {
+            calculatorState.expression = `${formatCalculatorNumber(calculatorState.firstValue)} ${calculatorState.operator} ${calculatorState.display}`;
+        }
+    } else {
+        calculatorState.expression = '';
+    }
+
+    updateCalculatorDisplay();
+}
+
+function pressCalculatorDecimal() {
+    calculatorState.taxSummary = null;
+
+    if (calculatorState.justEvaluated) {
+        calculatorState.display = '0';
+        calculatorState.justEvaluated = false;
+        calculatorState.firstValue = null;
+        calculatorState.operator = null;
+        calculatorState.expression = '';
+    }
+
+    if (calculatorState.waitingForSecond) {
+        calculatorState.display = '0.';
+        calculatorState.waitingForSecond = false;
+    } else if (!calculatorState.display.includes('.')) {
+        calculatorState.display = calculatorState.display === '0' ? '0.' : calculatorState.display + '.';
+    }
+
+    if (calculatorState.operator && calculatorState.firstValue !== null) {
+        calculatorState.expression = `${formatCalculatorNumber(calculatorState.firstValue)} ${calculatorState.operator} ${calculatorState.display}`;
+    } else {
+        calculatorState.expression = '';
+    }
+
+    updateCalculatorDisplay();
+}
+
+function toggleCalculatorSign() {
+    calculatorState.taxSummary = null;
+    const currentValue = Number(calculatorState.display);
+    calculatorState.display = formatCalculatorNumber(-currentValue);
+    updateCalculatorDisplay();
+}
+
+function applyCalculatorPercent() {
+    calculatorState.taxSummary = null;
+    const currentValue = Number(calculatorState.display);
+    let result;
+    if (calculatorState.operator && calculatorState.firstValue !== null && !calculatorState.waitingForSecond) {
+        result = (Number(calculatorState.firstValue) * currentValue) / 100;
+    } else {
+        result = currentValue / 100;
+    }
+    calculatorState.display = formatCalculatorNumber(result);
+    calculatorState.waitingForSecond = true;
+    calculatorState.justEvaluated = false;
+    updateCalculatorDisplay();
+}
+
+function calculateWithOperator(firstValue, secondValue, operator) {
+    switch (operator) {
+        case '+':
+            return firstValue + secondValue;
+        case '-':
+            return firstValue - secondValue;
+        case '*':
+            return firstValue * secondValue;
+        case '/':
+            return secondValue === 0 ? NaN : firstValue / secondValue;
+        default:
+            return secondValue;
+    }
+}
+
+function applyCalculatorTaxIncluded() {
+    const summary = buildCalculatorTaxSummary(calculatorState.display, 'included');
+    calculatorState.display = formatCalculatorNumber(summary.included);
+    calculatorState.firstValue = null;
+    calculatorState.operator = null;
+    calculatorState.waitingForSecond = false;
+    calculatorState.justEvaluated = false;
+    calculatorState.expression = '';
+    calculatorState.displayMemo = '';
+    calculatorState.taxSummary = summary;
+    updateCalculatorDisplay();
+}
+
+function applyCalculatorTaxExcluded() {
+    const summary = buildCalculatorTaxSummary(calculatorState.display, 'excluded');
+    calculatorState.display = formatCalculatorNumber(summary.excluded);
+    calculatorState.firstValue = null;
+    calculatorState.operator = null;
+    calculatorState.waitingForSecond = false;
+    calculatorState.justEvaluated = false;
+    calculatorState.expression = '';
+    calculatorState.displayMemo = '';
+    calculatorState.taxSummary = summary;
+    updateCalculatorDisplay();
+}
+
+function normalizeCalculatorTaxRateValue(value) {
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) {
+        return 10;
+    }
+    const clampedValue = Math.min(100, Math.max(0, numericValue));
+    return Number(clampedValue.toFixed(2));
+}
+
+function bindCalculatorTaxRateModalInput() {
+    const input = document.getElementById('calculatorTaxRateInput');
+    if (!input) {
+        return;
+    }
+
+    input.addEventListener('input', () => {
+        const rawValue = input.value.replace(/[^0-9.]/g, '');
+        const parts = rawValue.split('.');
+        const sanitizedValue = parts.length > 2
+            ? `${parts[0]}.${parts.slice(1).join('')}`
+            : rawValue;
+
+        const numericValue = Number(sanitizedValue);
+        if (!Number.isFinite(numericValue)) {
+            input.value = '';
+            return;
+        }
+
+        const clampedValue = Math.min(100, Math.max(0, numericValue));
+        let nextValue = String(clampedValue);
+        if (nextValue.includes('.')) {
+            nextValue = nextValue.replace(/0+$/, '').replace(/\.$/, '');
+        }
+        input.value = nextValue || '0';
+    });
+}
+
+function openCalculatorTaxRateModal() {
+    const modalBg = document.getElementById('calculatorTaxRateModalBg');
+    const input = document.getElementById('calculatorTaxRateInput');
+    if (!modalBg || !input) {
+        return;
+    }
+
+    input.value = normalizeCalculatorTaxRateValue(getSetting('taxRatePercent'));
+    modalBg.style.display = 'block';
+    modalBg.classList.remove('closing');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+        input.focus();
+        input.select();
+    }, 0);
+}
+
+function closeCalculatorTaxRateModal() {
+    const modalBg = document.getElementById('calculatorTaxRateModalBg');
+    if (!modalBg) {
+        return;
+    }
+
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = 'none';
+        modalBg.classList.remove('closing');
+    }, 180);
+    document.body.style.overflow = '';
+}
+
+function saveCalculatorTaxRate() {
+    const input = document.getElementById('calculatorTaxRateInput');
+    if (!input) {
+        closeCalculatorTaxRateModal();
+        return;
+    }
+
+    const nextRate = normalizeCalculatorTaxRateValue(input.value);
+    setSetting('taxRatePercent', nextRate);
+    closeCalculatorTaxRateModal();
+    updateCalculatorDisplay();
+}
+
+function handleCalculatorTaxButtonContextMenu(event, mode) {
+    event.preventDefault();
+    openCalculatorTaxRateModal();
+    return false;
+}
+
+function chooseCalculatorOperator(operator) {
+    calculatorState.taxSummary = null;
+    const inputValue = Number(calculatorState.display);
+    if (calculatorState.operator && !calculatorState.waitingForSecond) {
+        const result = calculateWithOperator(calculatorState.firstValue, inputValue, calculatorState.operator);
+        calculatorState.display = formatCalculatorNumber(result);
+        calculatorState.firstValue = result;
+        calculatorState.expression = `${formatCalculatorNumber(result)} ${operator}`;
+    } else if (calculatorState.operator && calculatorState.waitingForSecond) {
+        calculatorState.expression = `${formatCalculatorNumber(calculatorState.firstValue)} ${operator}`;
+    } else {
+        calculatorState.firstValue = inputValue;
+        calculatorState.expression = `${formatCalculatorNumber(inputValue)} ${operator}`;
+    }
+
+    calculatorState.operator = operator;
+    calculatorState.waitingForSecond = true;
+    calculatorState.justEvaluated = false;
+    updateCalculatorDisplay();
+}
+
+function calculateCalculatorResult() {
+    if (calculatorState.operator === null || calculatorState.firstValue === null) {
+        calculatorState.taxSummary = null;
+        return;
+    }
+
+    const secondValue = Number(calculatorState.display);
+    const firstValueText = formatCalculatorNumber(calculatorState.firstValue);
+    const secondValueText = formatCalculatorNumber(secondValue);
+    const activeOperator = calculatorState.operator;
+    const result = calculateWithOperator(calculatorState.firstValue, secondValue, activeOperator);
+    calculatorState.display = formatCalculatorNumber(result);
+    calculatorState.firstValue = result;
+    calculatorState.operator = null;
+    calculatorState.waitingForSecond = false;
+    calculatorState.justEvaluated = true;
+    calculatorState.expression = `${firstValueText} ${activeOperator} ${secondValueText} =`;
+    calculatorState.displayMemo = '';
+    calculatorState.taxSummary = null;
+    updateCalculatorDisplay();
+}
+
+function focusCalculatorInput() {
+    const input = document.getElementById('calculatorFocusInput');
+    if (!input) {
+        return;
+    }
+    setTimeout(() => {
+        input.focus();
+    }, 0);
+}
+
+const OFFICIAL_JAPANESE_HOLIDAYS = [
+    { "year": 2026, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 12, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 5, "day": 6, "name": "休日" },
+        { "month": 7, "day": 20, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 21, "name": "敬老の日" },
+        { "month": 9, "day": 22, "name": "休日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 12, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2027, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 11, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 21, "name": "春分の日" },
+        { "month": 3, "day": 22, "name": "休日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 19, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 20, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 11, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2028, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 10, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 17, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 17, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 8, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2029, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 8, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 16, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 16, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 14, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2030, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 14, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 15, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 16, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 14, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2031, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 13, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 21, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 15, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 13, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2032, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 12, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 19, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 20, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 11, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2033, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 10, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 18, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 19, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 10, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2034, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 9, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 17, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 18, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 9, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2035, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 8, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 16, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 17, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 8, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2036, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 13, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 21, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 15, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 12, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2037, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 12, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 20, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 21, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 12, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2038, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 11, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 19, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 20, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 11, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2039, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 10, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 18, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 19, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 9, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2040, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 9, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 16, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 17, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 8, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2041, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 14, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 15, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 16, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 14, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2042, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 13, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 21, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 15, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 13, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2043, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 12, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 19, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 20, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 11, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2044, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 10, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 17, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 18, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 9, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2045, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 9, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 17, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 18, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 9, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2046, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 8, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 16, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 17, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 8, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2047, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 13, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 21, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 15, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 13, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2048, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 12, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 19, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 20, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 11, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2049, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 10, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 18, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 19, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 10, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2050, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 9, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 18, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 19, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 10, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2051, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 8, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 17, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 18, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 9, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2052, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 13, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 21, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 15, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 13, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2053, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 12, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 20, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 21, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 12, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2054, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 11, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 19, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 20, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 11, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] },
+    { "year": 2055, "holidays": [
+        { "month": 1, "day": 1, "name": "元日" },
+        { "month": 1, "day": 10, "name": "成人の日" },
+        { "month": 2, "day": 11, "name": "建国記念の日" },
+        { "month": 2, "day": 23, "name": "天皇誕生日" },
+        { "month": 3, "day": 20, "name": "春分の日" },
+        { "month": 4, "day": 29, "name": "昭和の日" },
+        { "month": 5, "day": 3, "name": "憲法記念日" },
+        { "month": 5, "day": 4, "name": "みどりの日" },
+        { "month": 5, "day": 5, "name": "こどもの日" },
+        { "month": 7, "day": 18, "name": "海の日" },
+        { "month": 8, "day": 11, "name": "山の日" },
+        { "month": 9, "day": 19, "name": "敬老の日" },
+        { "month": 9, "day": 23, "name": "秋分の日" },
+        { "month": 10, "day": 10, "name": "スポーツの日" },
+        { "month": 11, "day": 3, "name": "文化の日" },
+        { "month": 11, "day": 23, "name": "勤労感謝の日" }
+    ] }
+];
+
+function getCalendarHolidayMap(year) {
+    const holidayData = OFFICIAL_JAPANESE_HOLIDAYS.find((entry) => entry.year === year);
+    if (!holidayData) {
+        return new Map();
+    }
+
+    const holidayMap = new Map();
+    holidayData.holidays.forEach((holiday) => {
+        holidayMap.set(`${holiday.month}/${holiday.day}`, holiday);
+    });
+
+    return holidayMap;
+}
+
+function loadCalendarMemoStorage() {
+    try {
+        const stored = localStorage.getItem('copyToolCalendarMemoStorage');
+        if (!stored) {
+            return {};
+        }
+        const parsed = JSON.parse(stored);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    }
+    catch (error) {
+        return {};
+    }
+}
+
+function saveCalendarMemoStorage() {
+    localStorage.setItem('copyToolCalendarMemoStorage', JSON.stringify(calendarMemoStorage));
+}
+
+function getCalendarDayEntries(dateKey) {
+    const stored = calendarMemoStorage[dateKey];
+    if (!stored || !Array.isArray(stored.entries)) {
+        return [];
+    }
+    return stored.entries.filter(Boolean);
+}
+
+function setCalendarDayEntries(dateKey, entries) {
+    if (!Array.isArray(entries) || entries.length === 0) {
+        delete calendarMemoStorage[dateKey];
+    }
+    else {
+        calendarMemoStorage[dateKey] = {
+            entries: entries.filter(Boolean)
+        };
+    }
+    saveCalendarMemoStorage();
+}
+
+function getCalendarMemoEntries(dateKey) {
+    return getCalendarDayEntries(dateKey).filter((entry) => entry && entry.kind === 'memo');
+}
+
+function setCalendarMemoEntries(dateKey, memoEntries) {
+    const existingEntries = getCalendarDayEntries(dateKey).filter((entry) => entry && entry.kind !== 'memo');
+    const nextEntries = [...existingEntries, ...memoEntries.filter(Boolean)];
+    setCalendarDayEntries(dateKey, nextEntries);
+}
+
+function buildCalendarCells(year, month) {
+    const firstDayOfMonth = new Date(year, month, 1);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstWeekday = firstDayOfMonth.getDay();
+    const totalCells = 42;
+    const cells = [];
+    const holidayMap = getCalendarHolidayMap(year);
+
+    for (let index = 0; index < totalCells; index += 1) {
+        const dayOffset = index - firstWeekday + 1;
+        const date = new Date(year, month, dayOffset);
+        const isCurrentMonth = date.getMonth() === month;
+        const holiday = holidayMap.get(`${date.getMonth() + 1}/${date.getDate()}`);
+        const dateKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        const memoEntries = getCalendarMemoEntries(dateKey);
+        cells.push({
+            date,
+            dateKey,
+            isCurrentMonth,
+            holiday,
+            memoEntries,
+            isToday: date.toDateString() === new Date().toDateString()
+        });
+    }
+
+    return cells;
+}
+
+function limitCalendarMemoInput() {
+    const input = document.getElementById('calendarMemoInput');
+    if (!input) {
+        return;
+    }
+    if (input.value.length > 15) {
+        input.value = input.value.slice(0, 15);
+    }
+}
+
+function openCalendarMemoModal(dateKey) {
+    const modalBg = document.getElementById('calendarMemoModalBg');
+    const input = document.getElementById('calendarMemoInput');
+    const deleteBtn = document.getElementById('calendarMemoDeleteBtn');
+    const title = document.getElementById('calendarMemoModalTitle');
+    if (!modalBg || !input || !deleteBtn || !title) {
+        return;
+    }
+
+    const existingMemo = getCalendarMemoEntries(dateKey)[0] || null;
+    calendarMemoModalState = {
+        dateKey,
+        memo: existingMemo
+    };
+
+    input.value = existingMemo ? existingMemo.text : '';
+    input.setSelectionRange(input.value.length, input.value.length);
+    deleteBtn.style.display = existingMemo ? 'inline-block' : 'none';
+    title.textContent = existingMemo ? '簡易メモを編集' : '簡易メモ';
+
+    const colorOptions = document.querySelectorAll('input[name="calendarMemoColor"]');
+    const selectedColor = existingMemo && existingMemo.color === 'red' ? 'red' : 'normal';
+    colorOptions.forEach((option) => {
+        option.checked = option.value === selectedColor;
+    });
+
+    modalBg.style.display = 'block';
+    modalBg.classList.remove('closing');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+        input.focus();
+    }, 0);
+}
+
+function closeCalendarMemoModal() {
+    const modalBg = document.getElementById('calendarMemoModalBg');
+    if (!modalBg) {
+        return;
+    }
+
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = 'none';
+        modalBg.classList.remove('closing');
+        document.body.style.overflow = '';
+        calendarMemoModalState = { dateKey: null, memo: null };
+    }, 180);
+}
+
+function saveCalendarMemo() {
+    const input = document.getElementById('calendarMemoInput');
+    if (!input || !calendarMemoModalState.dateKey) {
+        return;
+    }
+
+    const text = (input.value || '').trim();
+    const colorOption = document.querySelector('input[name="calendarMemoColor"]:checked');
+    const color = colorOption && colorOption.value === 'red' ? 'red' : 'normal';
+
+    if (text.length > 15) {
+        input.value = text.slice(0, 15);
+        return;
+    }
+
+    const existingEntries = getCalendarDayEntries(calendarMemoModalState.dateKey).filter((entry) => entry && entry.kind !== 'memo');
+    const nextEntries = [...existingEntries];
+
+    if (text) {
+        nextEntries.push({ kind: 'memo', text, color });
+    }
+
+    setCalendarDayEntries(calendarMemoModalState.dateKey, nextEntries);
+
+    closeCalendarMemoModal();
+    renderCalendarView();
+}
+
+function deleteCalendarMemoForDate(dateKey) {
+    if (!dateKey) {
+        return;
+    }
+
+    setCalendarMemoEntries(dateKey, []);
+    renderCalendarView();
+}
+
+function deleteCalendarMemo() {
+    if (!calendarMemoModalState.dateKey) {
+        return;
+    }
+
+    deleteCalendarMemoForDate(calendarMemoModalState.dateKey);
+    closeCalendarMemoModal();
+}
+
+function openCalendarCellContextMenu(event, dateKey) {
+    event.preventDefault();
+    event.stopPropagation();
+    showContextMenu(event.clientX, event.clientY, 'calendar', dateKey);
+}
+
+function openCalendarView() {
+    const screen = document.getElementById('calendarScreen');
+    if (!screen) {
+        return;
+    }
+
+    const now = new Date();
+    calendarViewState = {
+        year: now.getFullYear(),
+        month: now.getMonth()
+    };
+
+    screen.classList.add('open');
+    screen.style.display = 'flex';
+    renderCalendarView();
+}
+
+function closeCalendarView() {
+    const screen = document.getElementById('calendarScreen');
+    if (!screen) {
+        return;
+    }
+    screen.classList.remove('open');
+    screen.style.display = 'none';
+}
+
+function changeCalendarMonth(delta) {
+    calendarViewState.month += delta;
+    if (calendarViewState.month < 0) {
+        calendarViewState.month = 11;
+        calendarViewState.year -= 1;
+    } else if (calendarViewState.month > 11) {
+        calendarViewState.month = 0;
+        calendarViewState.year += 1;
+    }
+    renderCalendarView();
+}
+
+function renderCalendarView() {
+    const screen = document.getElementById('calendarScreen');
+    const title = document.getElementById('calendarCurrentMonth');
+    const grid = document.getElementById('calendarGrid');
+    if (!screen || !title || !grid) {
+        return;
+    }
+
+    title.textContent = `${calendarViewState.year}年${calendarViewState.month + 1}月`;
+
+    const cells = buildCalendarCells(calendarViewState.year, calendarViewState.month);
+    const holidayMap = getCalendarHolidayMap(calendarViewState.year);
+    const today = new Date();
+
+    grid.innerHTML = cells.map((cell) => {
+        const date = cell.date;
+        const dayOfWeek = date.getDay();
+        const isToday = cell.isToday;
+        const holiday = holidayMap.get(`${date.getMonth() + 1}/${date.getDate()}`);
+        const classNames = ['calendar-day'];
+
+        if (!cell.isCurrentMonth) {
+            classNames.push('other-month');
+        }
+
+        if (isToday) {
+            classNames.push('today');
+        }
+
+        if (dayOfWeek === 0) {
+            classNames.push('sun');
+        } else if (dayOfWeek === 6) {
+            classNames.push('sat');
+        }
+
+        if (holiday) {
+            classNames.push('holiday');
+        }
+
+        const holidayText = holiday ? `<div class="calendar-day-holiday">${holiday.name}</div>` : '';
+        const memoText = (cell.memoEntries || []).map((entry) => {
+            const memoClass = entry.color === 'red' ? 'calendar-day-memo red' : 'calendar-day-memo';
+            return `<div class="${memoClass}">${entry.text}</div>`;
+        }).join('');
+        const dayClassNames = ['calendar-day-number'];
+        if (holiday) {
+            dayClassNames.push('holiday');
+        }
+        const dayText = date.getDate();
+        return `<div class="${classNames.join(' ')}" data-date-key="${cell.dateKey}">
+            <div class="${dayClassNames.join(' ')}">${dayText}</div>
+            <div class="calendar-day-content">
+                ${holidayText}
+                ${memoText}
+            </div>
+        </div>`;
+    }).join('');
+
+    grid.querySelectorAll('.calendar-day').forEach((element) => {
+        const dateKey = element.getAttribute('data-date-key');
+        if (!dateKey) {
+            return;
+        }
+        element.addEventListener('contextmenu', (event) => {
+            openCalendarCellContextMenu(event, dateKey);
+        });
+    });
+}
+
+function openCalculatorModal() {
+    const modalBg = document.getElementById('calculatorModalBg');
+    if (!modalBg) {
+        return;
+    }
+
+    modalBg.style.display = 'block';
+    modalBg.classList.remove('closing');
+    document.body.style.overflow = 'hidden';
+    updateCalculatorDisplay();
+    focusCalculatorInput();
+}
+
+function closeCalculatorModal() {
+    const modalBg = document.getElementById('calculatorModalBg');
+    if (!modalBg) {
+        return;
+    }
+
+    modalBg.classList.add('closing');
+    setTimeout(() => {
+        modalBg.style.display = 'none';
+        modalBg.classList.remove('closing');
+    }, 180);
+    document.body.style.overflow = '';
+}
+
+function handleCalculatorKeydown(event) {
+    const modalBg = document.getElementById('calculatorModalBg');
+    if (!modalBg || modalBg.style.display !== 'block') {
+        return;
+    }
+
+    const key = event.key;
+    const keyCode = event.code;
+
+    const taxRateModalBg = document.getElementById('calculatorTaxRateModalBg');
+    const memoOverlay = document.getElementById('calculatorStockMemoOverlay');
+
+    if (memoOverlay) {
+        if (key === 'Escape') {
+            event.preventDefault();
+            closeCalculatorStockMemoEditor();
+            return;
+        }
+        if (key === 'Enter') {
+            event.preventDefault();
+            const textarea = memoOverlay.querySelector('.calculator-stock-memo-editor-input');
+            if (textarea) {
+                const index = calculatorStockMemoEditorIndex;
+                saveCalculatorStockMemo(index, textarea.value);
+            }
+            return;
+        }
+        return;
+    }
+
+    if (taxRateModalBg && taxRateModalBg.style.display === 'block') {
+        if (key === 'Escape') {
+            event.preventDefault();
+            closeCalculatorTaxRateModal();
+            return;
+        }
+        if (key === 'Enter') {
+            event.preventDefault();
+            saveCalculatorTaxRate();
+            return;
+        }
+        return;
+    }
+
+    if (key === 'Escape') {
+        event.preventDefault();
+        closeCalculatorModal();
+        return;
+    }
+
+    const stockList = document.getElementById('calculatorStockList');
+    const activeElement = document.activeElement;
+    const isStockInteractionTarget = activeElement && stockList && (
+        stockList.contains(activeElement) || activeElement.classList.contains('calculator-stock-delete-btn')
+    );
+
+    if (isStockInteractionTarget) {
+        return;
+    }
+
+    if (key === 'Delete') {
+        event.preventDefault();
+        clearCalculatorEntry();
+        return;
+    }
+
+    if (key === 'Backspace') {
+        event.preventDefault();
+        backspaceCalculator();
+        return;
+    }
+
+    if (key === '%' || keyCode === 'KeyP') {
+        event.preventDefault();
+        applyCalculatorPercent();
+        return;
+    }
+
+    if (key === '+' || keyCode === 'NumpadAdd') {
+        event.preventDefault();
+        chooseCalculatorOperator('+');
+        return;
+    }
+
+    if (key === '-' || keyCode === 'NumpadSubtract') {
+        event.preventDefault();
+        chooseCalculatorOperator('-');
+        return;
+    }
+
+    if (key === '*' || keyCode === 'NumpadMultiply') {
+        event.preventDefault();
+        chooseCalculatorOperator('*');
+        return;
+    }
+
+    if (key === '/' || keyCode === 'NumpadDivide') {
+        event.preventDefault();
+        chooseCalculatorOperator('/');
+        return;
+    }
+
+    if (key === '=' || key === 'Enter' || keyCode === 'NumpadEnter') {
+        event.preventDefault();
+        calculateCalculatorResult();
+        return;
+    }
+
+    if (key === '.' || keyCode === 'NumpadDecimal') {
+        event.preventDefault();
+        pressCalculatorDecimal();
+        return;
+    }
+
+    if (key === '+/-' || key === '±') {
+        event.preventDefault();
+        toggleCalculatorSign();
+        return;
+    }
+
+    if (/^[0-9]$/.test(key)) {
+        event.preventDefault();
+        pressCalculatorDigit(key);
+        return;
+    }
+
+    if (keyCode && /^Numpad[0-9]$/.test(keyCode)) {
+        const digit = keyCode.replace('Numpad', '');
+        event.preventDefault();
+        pressCalculatorDigit(digit);
+    }
+}
+
+(function attachCalculatorHandlers() {
+    const modalBg = document.getElementById('calculatorModalBg');
+    if (modalBg) {
+        modalBg.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeCalculatorModal();
+            }
+        });
+    }
+
+    renderCalculatorStock();
+    bindCalculatorTaxRateModalInput();
+    const memoButton = document.getElementById('calculatorStockMemoEditBtn');
+    if (memoButton) {
+        memoButton.addEventListener('click', handleCalculatorStockMemoButtonClick);
+    }
+    document.addEventListener('keydown', handleCalculatorKeydown);
+    document.addEventListener('click', (event) => {
+        const isMemoButtonClick = event.target.closest('#calculatorStockMemoEditBtn');
+        if (!isMemoButtonClick && !event.target.closest('.calculator-stock-memo-editor') && !event.target.closest('.calculator-stock-delete-btn')) {
+            closeCalculatorStockMemoEditor();
+        }
+    });
+
+    const taxRateModalBg = document.getElementById('calculatorTaxRateModalBg');
+    if (taxRateModalBg) {
+        taxRateModalBg.addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeCalculatorTaxRateModal();
+            }
+        });
+    }
+})();
+
+const calendarBtn = document.getElementById('calendarBtn');
+if (calendarBtn) {
+    calendarBtn.addEventListener('click', openCalendarButton);
+}
+
+function openCalendarButton() {
+    openCalendarView();
 }
 
 function shouldShowDeleteConfirm(forceConfirm = false) {
@@ -1372,6 +4303,36 @@ function showToast() {
 
 }
 
+function openFolderPath(path) {
+    const trimmed = (path || "").trim();
+    if (!trimmed) {
+        return;
+    }
+
+    const isElectron = typeof window !== "undefined"
+        && typeof window.require === "function"
+        && window.process?.versions?.electron;
+
+    if (!isElectron) {
+        showConfirmMessage("フォルダ", "この機能はEXE版専用です");
+        return;
+    }
+
+    try {
+        const electron = window.require("electron");
+        const fs = window.require("fs");
+        if (!fs.existsSync(trimmed)) {
+            showConfirmMessage("フォルダエラー", "フォルダが見つかりません");
+            return;
+        }
+        if (electron?.shell?.openPath) {
+            electron.shell.openPath(trimmed);
+        }
+    } catch (e) {
+        showConfirmMessage("フォルダエラー", "フォルダが見つかりません");
+    }
+}
+
 
 /* ==================================================
    コピー
@@ -1411,6 +4372,31 @@ async function copyText(text) {
    グループ選択肢更新
 ================================================== */
 
+function ensureDefaultGroup() {
+    return data.groups.find(group => group.name === "未分類") || null;
+}
+
+function createDefaultGroup() {
+    const existingDefaultGroup = ensureDefaultGroup();
+    if (existingDefaultGroup) {
+        return existingDefaultGroup;
+    }
+
+    const createdGroup = {
+        id: crypto.randomUUID(),
+        name: "未分類",
+        collapsed: false
+    };
+
+    data.groups.unshift(createdGroup);
+    return createdGroup;
+}
+
+function getDefaultGroupId() {
+    const existingDefaultGroup = ensureDefaultGroup();
+    return existingDefaultGroup ? existingDefaultGroup.id : null;
+}
+
 function updateGroupSelects() {
 
     const selects = [
@@ -1429,6 +4415,8 @@ function updateGroupSelects() {
 
         }
 
+        const previousValue = select.value;
+
         select.innerHTML = "";
 
         data.groups.forEach(group => {
@@ -1445,6 +4433,18 @@ function updateGroupSelects() {
             select.appendChild(option);
 
         });
+
+        const preferredGroupId = select.id === "newGroup"
+            ? getDefaultGroupId()
+            : null;
+
+        const selectedValue = previousValue && data.groups.some(group => group.id === previousValue)
+            ? previousValue
+            : preferredGroupId;
+
+        if (selectedValue) {
+            select.value = selectedValue;
+        }
 
     });
 
@@ -1518,35 +4518,14 @@ function render() {
         groupElement.className =
             "group";
 
-        groupElement.draggable = true;
+        groupElement.draggable = false;
 
 
-        /* ==================================================
-           グループドラッグ開始
-        ================================================== */
-
-        groupElement.addEventListener(
-            "dragstart",
-            function(event) {
-
-                if (
-                    event.target.closest(".group-actions") ||
-                    event.target.closest(".group-toggle")
-                ) {
-
-                    event.preventDefault();
-
-                    return;
-
-                }
-
-                draggedGroupId =
-                    group.id;
-
-                draggedItemId = null;
-
-            }
-        );
+        function clearGroupDropState() {
+            document.querySelectorAll('.group').forEach(el => {
+                el.classList.remove('drop-before', 'drop-after', 'dragging');
+            });
+        }
 
 
         /* ==================================================
@@ -1557,18 +4536,27 @@ function render() {
             "dragover",
             function(event) {
 
-                event.preventDefault();
-
                 if (
-                    draggedGroupId &&
-                    draggedGroupId !== group.id
+                    !draggedGroupId ||
+                    draggedGroupId === group.id
                 ) {
 
-                    groupElement.classList.add(
-                        "drag-over"
-                    );
+                    return;
 
                 }
+
+                event.preventDefault();
+
+                const rect = groupElement.getBoundingClientRect();
+                const isAfter = event.clientY > rect.top + rect.height / 2;
+
+                document.querySelectorAll('.group').forEach(el => {
+                    el.classList.remove('drop-before', 'drop-after');
+                });
+
+                groupElement.classList.add(
+                    isAfter ? 'drop-after' : 'drop-before'
+                );
 
             }
         );
@@ -1576,10 +4564,20 @@ function render() {
 
         groupElement.addEventListener(
             "dragleave",
-            function() {
+            function(event) {
+
+                if (
+                    event.relatedTarget &&
+                    groupElement.contains(event.relatedTarget)
+                ) {
+
+                    return;
+
+                }
 
                 groupElement.classList.remove(
-                    "drag-over"
+                    'drop-before',
+                    'drop-after'
                 );
 
             }
@@ -1597,7 +4595,8 @@ function render() {
                 event.preventDefault();
 
                 groupElement.classList.remove(
-                    "drag-over"
+                    'drop-before',
+                    'drop-after'
                 );
 
 
@@ -1606,6 +4605,8 @@ function render() {
                     draggedGroupId === group.id
                 ) {
 
+                    draggedGroupId = null;
+                    clearGroupDropState();
                     return;
 
                 }
@@ -1630,10 +4631,16 @@ function render() {
                     toIndex < 0
                 ) {
 
+                    draggedGroupId = null;
+                    clearGroupDropState();
                     return;
 
                 }
 
+                const rect = groupElement.getBoundingClientRect();
+                const insertAfter = event.clientY > rect.top + rect.height / 2;
+                const targetIndexInNewArray = fromIndex < toIndex ? toIndex - 1 : toIndex;
+                const insertIndex = insertAfter ? targetIndexInNewArray + 1 : targetIndexInNewArray;
 
                 const moved =
                     data.groups.splice(
@@ -1641,9 +4648,8 @@ function render() {
                         1
                     )[0];
 
-
                 data.groups.splice(
-                    toIndex,
+                    Math.max(0, Math.min(insertIndex, data.groups.length)),
                     0,
                     moved
                 );
@@ -1668,6 +4674,54 @@ function render() {
 
         header.className =
             "group-header";
+
+        const handle =
+            document.createElement("span");
+
+        handle.className =
+            "group-drag-handle";
+
+        handle.textContent =
+            "≡";
+
+        handle.title =
+            "ドラッグして並び替え";
+
+        handle.draggable = true;
+
+        handle.addEventListener(
+            "dragstart",
+            function(event) {
+
+                event.stopPropagation();
+
+                draggedGroupId =
+                    group.id;
+
+                draggedItemId = null;
+                groupElement.classList.add('dragging');
+
+                if (event.dataTransfer) {
+                    event.dataTransfer.setData(
+                        "text/plain",
+                        group.id
+                    );
+                    event.dataTransfer.effectAllowed =
+                        "move";
+                }
+
+            }
+        );
+
+        handle.addEventListener(
+            "dragend",
+            function() {
+
+                draggedGroupId = null;
+                clearGroupDropState();
+
+            }
+        );
 
         // header uses default styles; color feature removed
         header.style.background = '';
@@ -1790,12 +4844,26 @@ function render() {
 
                     action: function() {
 
-                        const fallback =
-                            data.groups.find(
+                        const remainingGroups =
+                            data.groups.filter(
                                 g =>
                                     g.id !== group.id
                             );
 
+                        const hasItemsToMove = data.items.some(item => item.groupId === group.id);
+                        let fallbackGroup = null;
+
+                        if (hasItemsToMove) {
+                            fallbackGroup = remainingGroups.find(
+                                g =>
+                                    g.name === "未分類"
+                            );
+
+                            if (!fallbackGroup) {
+                                fallbackGroup = createDefaultGroup();
+                                remainingGroups.unshift(fallbackGroup);
+                            }
+                        }
 
                         data.items.forEach(item => {
 
@@ -1805,7 +4873,7 @@ function render() {
                             ) {
 
                                 item.groupId =
-                                    fallback.id;
+                                    fallbackGroup ? fallbackGroup.id : null;
 
                             }
 
@@ -1813,10 +4881,7 @@ function render() {
 
 
                         data.groups =
-                            data.groups.filter(
-                                g =>
-                                    g.id !== group.id
-                            );
+                            remainingGroups;
 
 
                         save();
@@ -1849,6 +4914,10 @@ function render() {
 
         header.appendChild(
             groupActions
+        );
+
+        header.appendChild(
+            handle
         );
 
 
@@ -1896,6 +4965,14 @@ function render() {
             card.className =
                 "card";
 
+            const typeIcon = document.createElement("span");
+            typeIcon.className = "card-type-icon";
+            if (item.type === "folder") {
+                typeIcon.classList.add("folder");
+            }
+            typeIcon.textContent = item.type === "folder" ? "📁" : item.type === "url" ? "🌐" : "📝";
+            typeIcon.title = item.type === "folder" ? "フォルダ" : item.type === "url" ? "URL" : "テキスト";
+
             card.dataset.previewEnabled =
                 String(getSetting("cardPreviewEnabled"));
 
@@ -1919,6 +4996,8 @@ function render() {
             drag.title =
                 "ドラッグして並び替え";
 
+            card.appendChild(drag);
+            card.appendChild(typeIcon);
 
             const nameArea =
                 document.createElement("div");
@@ -1933,9 +5012,9 @@ function render() {
             name.className =
                 "name";
 
-            name.textContent =
-                item.name;
-
+            const nameText = document.createElement("span");
+            nameText.textContent = item.name;
+            name.appendChild(nameText);
 
             if (
                 item.type === "text"
@@ -1955,7 +5034,6 @@ function render() {
                 );
 
             }
-
 
             nameArea.appendChild(
                 name
@@ -1999,6 +5077,33 @@ function render() {
 
             }
 
+            /* ==================================================
+               Folder
+            ================================================== */
+
+            else if (item.type === "folder") {
+
+                const openButton =
+                    document.createElement("button");
+
+                openButton.className = 'copy-open';
+                openButton.textContent =
+                    "📂 Open";
+
+                openButton.title =
+                    "フォルダを開く";
+
+                openButton.onclick =
+                    () =>
+                        openFolderPath(
+                            item.content
+                        );
+
+                actions.appendChild(
+                    openButton
+                );
+
+            }
 
             /* ==================================================
                URL
@@ -2083,6 +5188,10 @@ function render() {
 
             card.appendChild(
                 drag
+            );
+
+            card.appendChild(
+                typeIcon
             );
 
             card.appendChild(
@@ -2456,37 +5565,14 @@ function showContextMenu(x, y, kind, id) {
     let menu = document.getElementById('contextMenu');
 
     if (!menu) {
-
         menu = document.createElement('div');
-
         menu.id = 'contextMenu';
-
-        const makeItem = (label, handler) => {
-
-            const el = document.createElement('div');
-
-            el.className = 'menu-item';
-
-            el.textContent = label;
-
-            el.addEventListener('click', (e) => {
-
-                e.stopPropagation();
-                try { handler(); } catch (err) { console.error(err); }
-                hideContextMenu();
-
-            });
-
-            return el;
-
-        };
-
         document.body.appendChild(menu);
-
     }
 
     // メニュー中身を差し替え
     menu.innerHTML = '';
+    menu.classList.remove('calendar-context-menu');
 
     if (kind === 'card') {
         const cardItem = data.items.find(item => item.id === id);
@@ -2497,6 +5583,20 @@ function showContextMenu(x, y, kind, id) {
     }
     else if (kind === 'group') {
         menu.appendChild(createMenuItem('編集', () => openGroupEdit(id)));
+    }
+    else if (kind === 'calendar') {
+        menu.classList.add('calendar-context-menu');
+        const hasMemo = getCalendarMemoEntries(id).length > 0;
+        const actions = document.createElement('div');
+        actions.className = 'calendar-context-actions';
+        actions.appendChild(createMenuItem('📝', () => openCalendarMemoModal(id), { title: '編集', className: 'calendar-context-action' }));
+        if (hasMemo) {
+            actions.appendChild(createMenuItem('🗑', () => {
+                deleteCalendarMemoForDate(id);
+                hideContextMenu();
+            }, { title: '削除', className: 'calendar-context-action delete' }));
+        }
+        menu.appendChild(actions);
     }
 
     // 位置調整・フェードイン
@@ -2510,10 +5610,13 @@ function showContextMenu(x, y, kind, id) {
         menu.style.transform = 'translateY(0)';
     });
 
-    function createMenuItem(label, handler) {
+    function createMenuItem(label, handler, options = {}) {
         const el = document.createElement('div');
-        el.className = 'menu-item';
+        el.className = 'menu-item' + (options.className ? ` ${options.className}` : '');
         el.textContent = label;
+        if (options.title) {
+            el.title = options.title;
+        }
         el.addEventListener('click', (e) => { e.stopPropagation(); handler(); hideContextMenu(); });
         el.addEventListener('mouseenter', () => el.style.background = '');
         return el;
@@ -2732,12 +5835,39 @@ function generateQrFromCardUrl(url) {
 
 // color feature removed; keep contextmenu hide behavior
 document.addEventListener('click', function() { hideContextMenu(); });
-document.addEventListener('contextmenu', function(e) { if (!e.target.closest('.card') && !e.target.closest('.group-header')) { hideContextMenu(); } });
+document.addEventListener('contextmenu', function(e) { if (!e.target.closest('.card') && !e.target.closest('.group-header') && !e.target.closest('.calendar-day')) { hideContextMenu(); } });
 
 
 /* ==================================================
    確認モーダル
 ================================================== */
+
+function setConfirmModalMode(mode) {
+    confirmModalMode = mode === 'alert' ? 'alert' : 'confirm';
+
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+    const okBtn = document.getElementById('confirmOkBtn');
+    if (!cancelBtn || !okBtn) {
+        return;
+    }
+
+    if (confirmModalMode === 'alert') {
+        cancelBtn.style.display = 'none';
+        cancelBtn.textContent = 'いいえ';
+        okBtn.textContent = 'OK';
+        cancelBtn.classList.remove('confirm-selected');
+        okBtn.classList.remove('confirm-selected');
+        okBtn.focus();
+        return;
+    }
+
+    cancelBtn.style.display = '';
+    cancelBtn.textContent = 'いいえ';
+    okBtn.textContent = 'はい';
+    cancelBtn.classList.add('confirm-selected');
+    okBtn.classList.remove('confirm-selected');
+    cancelBtn.focus();
+}
 
 function openConfirmModal(
     title,
@@ -2765,22 +5895,20 @@ function openConfirmModal(
         action;
     confirmChoice = 'cancel';
     confirmDialogOpen = true;
+    setConfirmModalMode('confirm');
 
     const modalBg = document.getElementById("confirmModalBg");
     modalBg.style.display = "block";
     modalBg.classList.remove('closing');
-
-    const cancelBtn = document.getElementById('confirmCancelBtn');
-    const okBtn = document.getElementById('confirmOkBtn');
-    if (cancelBtn && okBtn) {
-        cancelBtn.classList.add('confirm-selected');
-        okBtn.classList.remove('confirm-selected');
-        cancelBtn.focus();
-    }
 }
 
 
 function executeConfirm() {
+
+    if (confirmModalMode === 'alert') {
+        closeConfirmModal();
+        return;
+    }
 
     const action =
         confirmAction;
@@ -2798,6 +5926,10 @@ function executeConfirm() {
 }
 
 function chooseConfirmOption(next) {
+    if (confirmModalMode === 'alert') {
+        return;
+    }
+
     const cancelBtn = document.getElementById('confirmCancelBtn');
     const okBtn = document.getElementById('confirmOkBtn');
     if (!cancelBtn || !okBtn) {
@@ -2928,10 +6060,9 @@ function saveMemoToCard() {
     const text = document.getElementById('memoText')?.value || '';
     const trimmed = text.trim();
     if (!trimmed) {
-        openConfirmModal(
+        showConfirmMessage(
             'カード化できません',
-            'メモが空のため、カード化できません。',
-            null
+            'メモが空のため、カード化できません。'
         );
         return;
     }
@@ -3065,12 +6196,32 @@ function openTranslateService(service) {
    追加フォーム
 ================================================== */
 
+function syncCardTypeInputs(mode) {
+    const typeSelect = document.getElementById(mode === 'edit' ? 'editType' : 'newType');
+    const contentLabel = document.getElementById(mode === 'edit' ? 'editContentLabel' : 'newContentLabel');
+    const textInput = document.getElementById(mode === 'edit' ? 'editText' : 'newText');
+    const folderInput = document.getElementById(mode === 'edit' ? 'editFolderPath' : 'newFolderPath');
+    const folderHint = document.getElementById(mode === 'edit' ? 'editFolderHint' : 'newFolderHint');
+
+    if (!typeSelect || !contentLabel || !textInput || !folderInput || !folderHint) {
+        return;
+    }
+
+    const isFolder = typeSelect.value === 'folder';
+    textInput.style.display = isFolder ? 'none' : 'block';
+    folderInput.style.display = isFolder ? 'block' : 'none';
+    folderHint.style.display = isFolder ? 'block' : 'none';
+    contentLabel.textContent = isFolder ? 'フォルダパス' : '内容';
+}
+
 function closeAddBox() {
     const box = document.getElementById('addBox');
     if (!box) return;
     document.getElementById('newName').value = '';
     document.getElementById('newText').value = '';
+    document.getElementById('newFolderPath').value = '';
     document.getElementById('newType').value = 'text';
+    syncCardTypeInputs('new');
     box.style.display = 'none';
 }
 
@@ -3093,6 +6244,7 @@ function toggleAdd() {
             "block";
         box.classList.remove('closing');
         updateGroupSelects();
+        syncCardTypeInputs('new');
         setTimeout(() => {
             document.getElementById('newName')?.focus();
         }, 0);
@@ -3131,8 +6283,14 @@ function addItem() {
             .value;
 
 
-    const content =
-        document
+    const content = type === "folder"
+        ? document
+            .getElementById(
+                "newFolderPath"
+            )
+            .value
+            .trim()
+        : document
             .getElementById(
                 "newText"
             )
@@ -3161,6 +6319,26 @@ function addItem() {
 
     }
 
+
+    const selectedGroupElement = document.getElementById("newGroup");
+    const selectedGroupName = selectedGroupElement?.selectedOptions?.[0]?.textContent?.trim() || "";
+    const hasDefaultGroup = !!ensureDefaultGroup();
+
+    if (selectedGroupName === "未分類" && !hasDefaultGroup) {
+        const defaultGroup = createDefaultGroup();
+        if (defaultGroup) {
+            groupId = defaultGroup.id;
+        }
+    }
+
+    if (type === "folder" && !content) {
+        showConfirmMessage(
+            "入力エラー",
+            "フォルダパスを入力してください。"
+        );
+
+        return;
+    }
 
     data.items.push({
 
@@ -3255,8 +6433,17 @@ function openEdit(id) {
         .value =
             item.content;
 
+    document
+        .getElementById(
+            "editFolderPath"
+        )
+        .value =
+            item.type === "folder"
+                ? item.content
+                : "";
 
     updateGroupSelects();
+    syncCardTypeInputs('edit');
 
 
     document
@@ -3312,8 +6499,14 @@ function saveEdit() {
             .value;
 
 
-    const content =
-        document
+    const content = type === "folder"
+        ? document
+            .getElementById(
+                "editFolderPath"
+            )
+            .value
+            .trim()
+        : document
             .getElementById(
                 "editText"
             )
@@ -3597,6 +6790,12 @@ function importData(event) {
    初期状態
 ================================================== */
 
+function resetToolbarOrder() {
+    settings.toolbarOrder = [...defaultToolbarOrder];
+    saveSettings();
+    applyToolbarOrder();
+}
+
 function resetData() {
 
     runWithConfirm({
@@ -3667,19 +6866,12 @@ function showConfirmMessage(
         null;
     confirmChoice = 'cancel';
     confirmDialogOpen = true;
+    setConfirmModalMode('alert');
 
 
     const modalBg = document.getElementById("confirmModalBg");
     modalBg.style.display = "block";
     modalBg.classList.remove('closing');
-
-    const cancelBtn = document.getElementById('confirmCancelBtn');
-    const okBtn = document.getElementById('confirmOkBtn');
-    if (cancelBtn && okBtn) {
-        cancelBtn.classList.add('confirm-selected');
-        okBtn.classList.remove('confirm-selected');
-        cancelBtn.focus();
-    }
 
 }
 
@@ -3769,18 +6961,113 @@ document.getElementById('addBox')?.addEventListener('click', function(event) {
         closeAddBox();
     }
 });
+
+document.getElementById('editModalBg')?.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeEdit();
+    }
+});
+
+document.getElementById('groupModalBg')?.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeGroupModal();
+    }
+});
+
+document.getElementById('translateModalBg')?.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeTranslateModal();
+    }
+});
+
+document.getElementById('memoModalBg')?.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeMemoModal();
+    }
+});
+
+document.getElementById('qrModalBg')?.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeQrModal();
+    }
+});
+
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        const addBox = document.getElementById('addBox');
-        if (addBox && addBox.style.display === 'block') {
-            event.preventDefault();
-            closeAddBox();
-        }
+    if (event.key !== 'Escape') {
+        return;
+    }
+
+    const calculatorModalBg = document.getElementById('calculatorModalBg');
+    if (calculatorModalBg && calculatorModalBg.style.display === 'block') {
+        event.preventDefault();
+        closeCalculatorModal();
+        return;
+    }
+
+    if (confirmDialogOpen) {
+        event.preventDefault();
+        closeConfirmModal();
+        return;
+    }
+
+    const addBox = document.getElementById('addBox');
+    if (addBox && addBox.style.display === 'block') {
+        event.preventDefault();
+        closeAddBox();
+        return;
+    }
+
+    const editModalBg = document.getElementById('editModalBg');
+    if (editModalBg && editModalBg.style.display === 'block') {
+        event.preventDefault();
+        closeEdit();
+        return;
+    }
+
+    const groupModalBg = document.getElementById('groupModalBg');
+    if (groupModalBg && groupModalBg.style.display === 'block') {
+        event.preventDefault();
+        closeGroupModal();
+        return;
+    }
+
+    const translateModalBg = document.getElementById('translateModalBg');
+    if (translateModalBg && translateModalBg.style.display === 'block') {
+        event.preventDefault();
+        closeTranslateModal();
+        return;
+    }
+
+    const memoModalBg = document.getElementById('memoModalBg');
+    if (memoModalBg && memoModalBg.style.display === 'block') {
+        event.preventDefault();
+        closeMemoModal();
+        return;
+    }
+
+    const qrModalBg = document.getElementById('qrModalBg');
+    if (qrModalBg && qrModalBg.style.display === 'block') {
+        event.preventDefault();
+        closeQrModal();
+        return;
+    }
+
+    const settingsModal = document.getElementById('settingsModal');
+    if (settingsModal && settingsModal.style.display === 'flex') {
+        event.preventDefault();
+        closeSettings();
     }
 });
 
 function handleConfirmKeydown(event) {
     if (!confirmDialogOpen) {
+        return;
+    }
+    if (confirmModalMode === 'alert') {
+        if (event.key === 'Enter' || event.key === 'Escape') {
+            event.preventDefault();
+            closeConfirmModal();
+        }
         return;
     }
     if (event.key === 'ArrowRight' || event.key === 'Tab') {
@@ -3848,22 +7135,12 @@ document
    初回表示
 ================================================== */
 
+bindToolbarReordering();
 render();
 
 if (localStorage.getItem("theme") === "dark") {
     document.body.classList.add("dark");
 }
-
-document.getElementById("themeBtn").onclick = function () {
-
-    document.body.classList.toggle("dark");
-
-    localStorage.setItem(
-        "theme",
-        document.body.classList.contains("dark") ? "dark" : "light"
-    );
-
-};
 
 document.getElementById("themeBtn").onclick = function () {
 
@@ -3924,7 +7201,7 @@ document.addEventListener("keydown",function(e){
 document.addEventListener('click', function(e){
   const header=e.target.closest('.group-header,[data-group-header]');
   if(!header) return;
-  if(e.target.closest('button,.action-btn,.group-menu')) return;
+  if(e.target.closest('button,.action-btn,.group-menu,.group-drag-handle')) return;
   const toggle=header.querySelector('button,[data-toggle],.toggle');
   if(toggle){ toggle.click(); }
 });
@@ -3952,7 +7229,10 @@ document.addEventListener("dragleave",e=>{
 </script>
 <div id="settingsModal" class="settings-modal" style="display:none;">
     <div class="modal-content">
-        <h2>⚙️ 設定</h2>
+        <div class="modal-header">
+            <h2 style="margin:0;">⚙️ 設定</h2>
+            <button type="button" class="modal-close-btn" onclick="closeSettings()" aria-label="閉じる" title="閉じる">×</button>
+        </div>
 
         <div class="settings-options">
             <label class="settings-option">
@@ -3972,13 +7252,54 @@ document.addEventListener("dragleave",e=>{
             </label>
         </div>
 
-        <button onclick="exportData()">💾 バックアップ</button>
-        <button onclick="document.getElementById('importFile').click()">📥 復元</button>
-        <button onclick="resetData()">🔄 初期状態に戻す</button>
+        <div class="settings-section">
+            <h3>🌐 ブラウザ</h3>
+            <label class="settings-option settings-option-block">
+                <span>
+                    <span class="settings-label">起動ページ（URL）</span>
+                    <div class="settings-help">複数登録した場合は上から順番に開きます。</div>
+                </span>
+            </label>
+            <div id="browserSettingsList"></div>
+            <button type="button" onclick="addBrowserUrlSetting()">＋追加</button>
+        </div>
+
+        <div class="settings-section">
+            <h3>🧩 EXE版のみ</h3>
+            <label class="settings-option settings-option-block">
+                <span>
+                    <span class="settings-label">起動ブラウザ</span>
+                    <select id="settingBrowserLaunchMode" onchange="setSetting('browserLaunchMode', this.value)">
+                        <option value="default">既定のブラウザ</option>
+                        <option value="chrome">Google Chrome</option>
+                        <option value="edge">Microsoft Edge</option>
+                        <option value="firefox">Mozilla Firefox</option>
+                    </select>
+                    <div class="settings-help">HTML版ではこの設定は反映されません。</div>
+                </span>
+            </label>
+        </div>
+
+        <div class="settings-section">
+            <h3>🧮 電卓</h3>
+            <label class="settings-option settings-option-block">
+                <span>
+                    <span class="settings-label">消費税率</span>
+                    <input id="settingTaxRatePercent" type="number" min="0" max="100" step="0.1" value="10" onchange="setSetting('taxRatePercent', Number(this.value))">
+                    <div class="settings-help">税込・税抜計算で使用する税率です。初期値は 10% です。</div>
+                </span>
+            </label>
+        </div>
+
+        <div class="settings-section">
+            <h3>📦 データ管理</h3>
+            <button onclick="exportData()">💾 バックアップ</button>
+            <button onclick="document.getElementById('importFile').click()">📥 復元</button>
+            <button onclick="resetToolbarOrder()">🔁 ツールバー順を初期化</button>
+            <button onclick="resetData()">🔄 初期状態に戻す</button>
+        </div>
 
         <hr>
-
-        <button onclick="closeSettings()">閉じる</button>
     </div>
 </div>
 </body>
